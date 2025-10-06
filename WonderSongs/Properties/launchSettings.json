@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WonderSongs (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WonderSongs (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
