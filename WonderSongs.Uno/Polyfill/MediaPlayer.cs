@@ -1,0 +1,157 @@
+#if ANDROID
+global using MediaPlayer = WonderSongs.Polyfill.MediaPlayer;
+global using MediaPlaybackSession = WonderSongs.Polyfill.MediaPlaybackSession;
+
+namespace WonderSongs.Polyfill;
+
+using Android.App;
+using Windows.Storage;
+using System;
+using System.Threading;
+using AndroidMediaPlayer = Android.Media.MediaPlayer;
+class MediaPlayer
+{
+    readonly MediaPlayer? self;
+    readonly AndroidMediaPlayer mp = new();
+    CancellationTokenSource? positionUpdateCts;
+
+    public bool IsLoopingEnabled
+    {
+        get => mp.Looping;
+        set => mp.Looping = value;
+    }
+
+    public event Action<MediaPlayer, object>? MediaEnded;
+
+    static object EmptyArgs { get; } = new();
+
+    public MediaPlaybackSession PlaybackSession { get; }
+
+    StorageFile? _source;
+    public StorageFile Source
+    {
+        get => _source!;
+        set
+        {
+            _source = value;
+            InitializeSource(value);
+        }
+    }
+
+    public MediaPlayer()
+    {
+        
+        mp.Completion += delegate
+        {
+            CurrentStateChanged?.Invoke(this, EmptyArgs);
+            MediaEnded?.Invoke(this, EmptyArgs);
+        };
+        PlaybackSession = new(this, mp);
+        WonderSongs.Polyfill.MediaPlayerManager.Instance.Register(this);
+        self = this;
+        
+    }
+
+    void InitializeSource(StorageFile file)
+    {
+        try
+        {
+            // Release any existing source
+            mp.Reset();
+
+            // Try reflection to get SAF Uri
+            var uri = file.TryGetAndroidUri();
+
+            if (uri != null)
+            {
+                mp.SetDataSource(Application.Context, uri);
+            }
+            else
+            {
+                // Fallback: try normal path
+                var path = file.Path;
+                mp.SetDataSource(path);
+            }
+
+            mp.Prepare();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[MediaPlayer] Failed to initialize source: {ex}");
+        }
+    }
+
+    public void Play()
+    {
+        if (!mp.IsPlaying)
+        {
+            mp.Start();
+            PlaybackSession.StartPositionUpdates();
+            CurrentStateChanged?.Invoke(this, EmptyArgs);
+        }
+    }
+
+    public void Pause()
+    {
+        if (mp.IsPlaying)
+        {
+            mp.Pause();
+            PlaybackSession.StopPositionUpdates();
+            CurrentStateChanged?.Invoke(this, EmptyArgs);
+        }
+    }
+
+    double _volume = 1.0;
+    public double Volume
+    {
+        get => _volume;
+        set
+        {
+            _volume = Math.Clamp(value, 0, 1);
+            mp.SetVolume((float)_volume, (float)_volume);
+        }
+    }
+    public event Action<MediaPlayer, object>? CurrentStateChanged;
+}
+
+class MediaPlaybackSession
+{
+    readonly AndroidMediaPlayer mp;
+    readonly MediaPlayer owner;
+    Timer? positionTimer;
+
+    public MediaPlaybackSession(MediaPlayer owner, AndroidMediaPlayer mp)
+    {
+        this.owner = owner;
+        this.mp = mp;
+    }
+
+    public event Action<MediaPlaybackSession, object>? PositionChanged;
+
+    public TimeSpan Position
+        => TimeSpan.FromMilliseconds(mp.CurrentPosition);
+
+    public TimeSpan NaturalDuration
+        => TimeSpan.FromMilliseconds(mp.Duration);
+
+    public void StartPositionUpdates()
+    {
+        StopPositionUpdates();
+        positionTimer = new Timer(_ =>
+        {
+            PositionChanged?.Invoke(this, EventArgs.Empty);
+        }, null, 0, 500); // every 0.5s
+    }
+
+    public void StopPositionUpdates()
+    {
+        positionTimer?.Dispose();
+        positionTimer = null;
+    }
+
+    public MediaPlaybackState PlaybackState
+    {
+        get => mp.IsPlaying ? MediaPlaybackState.Playing : MediaPlaybackState.Paused;
+    }
+}
+#endif
