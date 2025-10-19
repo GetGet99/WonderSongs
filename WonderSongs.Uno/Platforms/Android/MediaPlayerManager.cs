@@ -1,7 +1,6 @@
-#if ANDROID
 using Android.Content;
 
-namespace WonderSongs.Polyfill;
+namespace WonderSongs.Droid;
 
 class MediaPlayerManager
 {
@@ -12,7 +11,7 @@ class MediaPlayerManager
     {
         if (CurrentPlayer is null)
         {
-            var context = Android.App.Application.Context;
+            var context = global::Android.App.Application.Context;
             var intent = new Intent(context, typeof(MediaPlaybackService));
             context.StartForegroundService(intent);
         }
@@ -34,5 +33,3 @@ class MediaPlayerManager
     public void Play() => CurrentPlayer?.Play();
     public void Pause() => CurrentPlayer?.Pause();
 }
-
-#endif

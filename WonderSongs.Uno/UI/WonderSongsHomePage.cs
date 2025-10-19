@@ -11,16 +11,56 @@ partial class WonderSongsHomePage : TemplateControl<Page>
     // Global array of funny/inspiring messages for "Select your collections"
     private static readonly string[] CollectionMessages = new[]
     {
-        "Pick your playlist paradise!",
-        "Unleash your musical treasure trove!",
+        "Pick your music paradise!",
+        "Open your musical treasure trove!",
         "Dive into your song stash!",
-        "Choose your jam vault!",
+        "Choose your groove vault!",
         "Select your sonic adventure!",
-        "Open your box of musical wonders!",
-        "Time to raid your tune trove!",
-        "Grab your groove collection!",
-        "Find your harmony haven!",
-        "Select your symphony stash!"
+        "Open your vault of musical wonders!",
+        "Explore your tune trove!",
+        "Open your groove collection!",
+        "Find your harmony hub!",
+        "Select your sound stash!",
+        "Where does your next vibe live?",
+        "Choose your realm of rhythm!",
+        "Let’s see what your collection’s hiding.",
+        "Find your next sound sanctuary.",
+        "Your next musical journey starts here.",
+        "Open the gates to groove city.",
+        "Dig into your archive of awesome.",
+        "Let the beats out of their folder.",
+        "Select your library of legends.",
+        "Unlock your sound universe.",
+        "Pick the collection that defines your mood today.",
+        "Where your bangers are born.",
+        "Ready to summon some good tunes?",
+        "Choose your sonic playground.",
+        "Music lives here — which world will you enter?",
+        "Open your personal hall of fame.",
+        "Pick your soundtrack vault.",
+        "Show us where the magic’s stored.",
+        "Your vibe begins with a folder — choose wisely.",
+        "Enter your collection of pure rhythm energy.",
+        "Choose your soundtrack source!",
+        "Pick the collection that matches your mood.",
+        "Step into your world of sound.",
+        "Ready to spin your own selection?",
+        "Where do your best beats live?",
+        "Open the door to your next vibe.",
+        "Your next jam starts here.",
+        "Find your folder of fame.",
+        "Where your rhythms rest — until now.",
+        "Show us where the music magic happens.",
+        "Uncover your hidden bangers vault.",
+        "Summon your symphony of sound.",
+        "Select your realm of rhythm.",
+        "Let’s see what your collection’s hiding.",
+        "Enter your personal sound sanctuary.",
+        "Unlock your archive of awesome.",
+        "Dig into your library of legends.",
+        "Discover where your best tunes call home.",
+        "Where melodies meet destiny — pick wisely.",
+        "Time to awaken your collection of classics."
     };
 
     protected override void Initialize(Page rootElement)
@@ -57,7 +97,7 @@ partial class WonderSongsHomePage : TemplateControl<Page>
             Text("or").Center_Horizontal(),
             new Button
             {
-                Content = "Select folder of musics"
+                Content = "Select folder of music"
             }.ClickEv(async delegate
             {
                 var picker = new FolderPicker()

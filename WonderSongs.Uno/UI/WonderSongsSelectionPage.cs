@@ -49,15 +49,36 @@ partial class WonderSongsSelectionPage : TemplateControl<Page>
     {
         "Pick your next jam!",
         "What tune shall we vibe to next?",
-        "Choose wisely, music master!",
+        "Choose wisely... your vibe depends on it.",
         "Spin the wheel of songs!",
         "Time for another banger!",
         "Select your next sonic adventure!",
-        "Let the music play—choose a song!",
-        "What's your next earworm?",
+        "Let the music play — choose a song!",
         "Surprise us with your pick!",
-        "Hit me with your best song!"
+        "Hit me with your best song!",
+        "Pick your next favorite… or maybe your next second favorite 🤔",
+        "What’s calling your name this time?",
+        "Destiny awaits — three tracks enter, one track leaves.",
+        "Your next vibe is just a click away.",
+        "Which one’s feeling right for the moment?",
+        "Trust your instincts… or pure chaos. Your call.",
+        "You’re the DJ — make it count!",
+        "Pick the soundtrack to your next 3 minutes.",
+        "Follow your heart. Or your shuffle finger.",
+        "Three options. Infinite swagger.",
+        "Choose the next chapter of your groove story.",
+        "What’s the next move, maestro?",
+        "Feeling lucky, or just feeling vibey?",
+        "A tough choice, but someone’s gotta drop the beat.",
+        "Ready for round two of absolute tunes?",
+        "One of these songs has main-character energy. Find it.",
+        "No wrong answers — only different flavors of awesome.",
+        "Make your pick… destiny’s listening.",
+        "Which one’s whispering ‘play me’? 🎶",
+        "Your ears will thank you for this one.",
+        "Choose your champion — may the best track win."
     };
+
 
     TextBlock nextSongTextBlock = new();
 

@@ -1,14 +1,10 @@
-#if ANDROID
-global using MediaPlayer = WonderSongs.Polyfill.MediaPlayer;
-global using MediaPlaybackSession = WonderSongs.Polyfill.MediaPlaybackSession;
-
-namespace WonderSongs.Polyfill;
-
-using Android.App;
-using Windows.Storage;
-using System;
-using System.Threading;
+global using MediaPlayer = WonderSongs.Droid.MediaPlayer;
+global using MediaPlaybackSession = WonderSongs.Droid.MediaPlaybackSession;
 using AndroidMediaPlayer = Android.Media.MediaPlayer;
+using Application = Android.App.Application;
+
+namespace WonderSongs.Droid;
+
 class MediaPlayer
 {
     readonly MediaPlayer? self;
@@ -47,7 +43,7 @@ class MediaPlayer
             MediaEnded?.Invoke(this, EmptyArgs);
         };
         PlaybackSession = new(this, mp);
-        WonderSongs.Polyfill.MediaPlayerManager.Instance.Register(this);
+        MediaPlayerManager.Instance.Register(this);
         self = this;
         
     }
@@ -77,7 +73,7 @@ class MediaPlayer
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[MediaPlayer] Failed to initialize source: {ex}");
+            Debug.WriteLine($"[MediaPlayer] Failed to initialize source: {ex}");
         }
     }
 
@@ -154,4 +150,3 @@ class MediaPlaybackSession
         get => mp.IsPlaying ? MediaPlaybackState.Playing : MediaPlaybackState.Paused;
     }
 }
-#endif

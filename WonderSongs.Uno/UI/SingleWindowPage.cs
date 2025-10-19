@@ -1,21 +1,40 @@
 using WonderSongs.Core;
+#if ANDROID
+using MainActivity = WonderSongs.Droid.MainActivity;
+#endif
 
 namespace WonderSongs.UI;
 
 partial class SingleWindowPage : Page
 {
-    private static readonly string[] FunnyPlayingMessages = new[]
+    private static readonly string[] FunnyPlayingMessages = new string[]
     {
-        "Your song is spinning up! Grab a snack.",
-        "Jamming out... Please hold your applause.",
-        "The music elves are working overtime!",
-        "Song loading... Dance break recommended.",
-        "Your tune is brewing. Patience, maestro!",
-        "Rocking out in the background. Air guitar optional.",
-        "Music magic in progress. Come back with jazz hands.",
-        "Your song is on a secret mission. Stand by.",
-        "Melody incoming... Prepare your ears!",
-        "The beat drops soon. Don't touch that dial!"
+        "Nice choice — your collection has great taste.",
+        "And the beat goes on…",
+        "Let’s see if this one hits harder than the last!",
+        "Another banger? You’re on fire!",
+        "Your collection delivers again.",
+        "Certified vibe continuation.",
+        "Transitioning to your next sonic adventure.",
+        "Plot twist: this track might just top the last one.",
+        "Cue the next chapter of your personal soundtrack.",
+        "Music never sleeps… and apparently, neither do you.",
+        "Next up: something your speakers might fall in love with.",
+        "Brace yourself — another groove is coming.",
+        "Great pick!",
+        "Your collection never misses",
+        "You’re the DJ now. No pressure.",
+        "Hope your neighbors like this one too.",
+        "Continuing your main-character energy.",
+        "The vibe check continues…",
+        "Don’t worry, this next one also slaps.",
+        "Stay tuned — your rhythm journey continues.",
+        "You really trust that random picker, huh?",
+        "One song ends, another legend begins.",
+        "Playlist destiny unfolding in real time.",
+        "RNGesus has blessed your next track.",
+        "Music’s rolling — just vibe with it.",
+        "Can’t stop, won’t stop… playing your collection’s finest."
     };
 
     private static readonly Random _random = new();
@@ -60,10 +79,21 @@ partial class SingleWindowPage : Page
                     var message = FunnyPlayingMessages[_random.Next(FunnyPlayingMessages.Length)];
                     tb.Text = message;
                 }
-                var pause = new Button { Content = new SymbolIcon { Symbol = Symbol.Pause } };
-                var play = new Button { Content = new SymbolIcon { Symbol = Symbol.Play } };
+                var pause = new Button {
+                    Content = new SymbolIcon { Symbol = Symbol.Pause },
+                    Width = 48,
+                    Height = 48,
+                    CornerRadius = new CornerRadius(24)
+                };
+                var play = new Button { Content = new SymbolIcon { Symbol = Symbol.Play },
+                    Width = 48,
+                    Height = 48,
+                    CornerRadius = new CornerRadius(24),
+                    Style = (Style)Application.Current.Resources["AccentButtonStyle"]
+                };
                 play.ClickEv(_ => playable.Play());
                 pause.ClickEv(_ => playable.Pause());
+
 
                 playable.IsPlayingProperty.ApplyAndRegisterForNewValue((_, x) =>
                 {
@@ -81,14 +111,55 @@ partial class SingleWindowPage : Page
                         pause.Visibility = x ? Visibility.Visible : Visibility.Collapsed;
                     }
                 });
-                return (RefreshMessage, new VStack(spacing: 16)
+
+                Border clockPlace = new()
                 {
-                    tb,
-                    new HStack(spacing: 16)
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Margin = new Thickness(16)
+                };
+
+                {
+                    Button showClock = Button("Show Clock");
+                    clockPlace.Child = showClock;
+                    HStack clockWithButton = new(spacing: 16)
                     {
-                        play, pause
-                    }.Center_Horizontal()
-                }.Center_Vertical());
+                        Button("Hide Clock").ClickEv(_ =>
+                        {
+                            clockPlace.Child = showClock;
+                        }),
+                        ClockFactory.Clock()
+                    };
+                    showClock.ClickEv(_ =>
+                    {
+                        clockPlace.Child = clockWithButton;
+                    });
+#if ANDROID
+                    MainActivity.Resume += ClockDisplayUpdate;
+                    MainActivity.Pause += ClockDisplayUpdate;
+                    void ClockDisplayUpdate()
+                    {
+                        clockPlace.Visibility = MainActivity.IsPinned ? Visibility.Visible : Visibility.Collapsed;
+                    }
+                    ClockDisplayUpdate();
+#endif
+                }
+
+                return (RefreshMessage, new Grid
+                {
+                    Children =
+                    {
+                        new VStack(spacing: 16)
+                        {
+                            tb,
+                            new HStack(spacing: 16)
+                            {
+                                play, pause
+                            }.Center_Horizontal()
+                        }.Center_Vertical(),
+                        clockPlace
+                    }
+                });
             }
         }
     }

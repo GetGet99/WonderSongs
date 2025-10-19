@@ -1,7 +1,3 @@
-using System.Reflection;
-using Uno.UI.Extensions;
-using Windows.Devices.Haptics;
-
 namespace WonderSongs.Core;
 [AutoProperty]
 partial class WonderSongsPlayable
@@ -104,29 +100,22 @@ partial class WonderSongsPlayable
             Play();
         }
     }
-#if ANDROID
-    static FieldInfo AndroidPlayerMember { get; } = typeof(MediaPlayer).GetField("_player", System.Reflection.BindingFlags.NonPublic)!;
-#endif
     public async void Play()
     {
-        if (PlayingSong is null)
+        if (PlayingSong is not null) goto Play;
+        PlayingSong = NextSong;
+        NextSong = null;
+        if (PlayingSong is not null)
         {
-            PlayingSong = NextSong;
-            NextSong = null;
-            if (PlayingSong is not null)
-            {
-                NewSongPlaying?.Invoke(PlayingSong);
-                var src = await PlayingSong.GetSourceAsync();
-//#if ANDROID
-//                var androidMediaPlayer = (Android.Media.MediaPlayer)AndroidPlayerMember.GetValue(MediaPlayer)!;
-//                await androidMediaPlayer.SetDataSourceAsync(Android.App.Application.Context, src);
-//#else
-                MediaPlayer.Source = src;
-//#endif
-                hasCrossed = false;
-            }
+            NewSongPlaying?.Invoke(PlayingSong);
+            var src = await PlayingSong.GetSourceAsync();
+            MediaPlayer.Source = src;
+            hasCrossed = false;
+            goto Play;
         }
-        var a = MediaPlayer.AsNativeView();
+        // possibly that there is no next song scheduled yet
+        return;
+    Play:
         MediaPlayer.Play();
     }
 
@@ -143,7 +132,7 @@ partial class WonderSongsPlayable
                 MediaPlayer.Volume = 1;
             });
 #else
-            Platforms.Android.VibrationHelper.VibrateTwice();
+            Droid.VibrationHelper.VibrateTwice();
             Task.Run(async () =>
             {
                 MediaPlayer.Volume = 0.5;

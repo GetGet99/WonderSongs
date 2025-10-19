@@ -1,6 +1,7 @@
 #if ANDROID
 using System.Reflection;
 using Android.Content;
+using WonderSongs.Droid;
 #endif
 
 namespace WonderSongs.Core;
@@ -49,7 +50,7 @@ static class WonderSongsApp
         var historyKey = "History";
         var localSettings = ApplicationData.Current.LocalSettings;
 #if ANDROID
-        var dirPath = Polyfill.StorageExtensions.TryGetAndroidUri(directory).ToString() ?? "";
+        var dirPath = StorageExtensions.TryGetAndroidUri(directory).ToString() ?? "";
 #else
         var dirPath = directory.Path;
 #endif

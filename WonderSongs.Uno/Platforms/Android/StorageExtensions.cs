@@ -1,7 +1,7 @@
 #if ANDROID
 using System.Reflection;
 using Uri = Android.Net.Uri;
-namespace WonderSongs.Polyfill;
+namespace WonderSongs.Droid;
 public static class StorageExtensions
 {
     public static Uri TryGetAndroidUri(this StorageFile file)
@@ -24,7 +24,7 @@ public static class StorageExtensions
             "_fileUri",
             BindingFlags.NonPublic | BindingFlags.Instance);
 
-        var uriValue = uriField?.GetValue(impl) as Android.Net.Uri;
+        var uriValue = uriField?.GetValue(impl) as Uri;
         return uriValue;
         //}
         //catch (Exception ex)
@@ -53,7 +53,7 @@ public static class StorageExtensions
             "_folderUri",
             BindingFlags.NonPublic | BindingFlags.Instance);
 
-        var uriValue = uriField?.GetValue(impl) as Android.Net.Uri;
+        var uriValue = uriField?.GetValue(impl) as Uri;
         return uriValue;
         //}
         //catch (Exception ex)

@@ -1,7 +1,7 @@
 using Android.Content;
 using Android.OS;
 
-namespace WonderSongs.Platforms.Android;
+namespace WonderSongs.Droid;
 
 public static class VibrationHelper
 {
