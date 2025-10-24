@@ -7,9 +7,7 @@ namespace WonderSongs.Droid;
 
 class MediaPlayer
 {
-    readonly MediaPlayer? self;
     readonly AndroidMediaPlayer mp = new();
-    CancellationTokenSource? positionUpdateCts;
 
     public bool IsLoopingEnabled
     {
@@ -22,6 +20,8 @@ class MediaPlayer
     static object EmptyArgs { get; } = new();
 
     public MediaPlaybackSession PlaybackSession { get; }
+
+    public MediaPlaybackCommandManager CommandManager { get; } = new();
 
     StorageFile? _source;
     public StorageFile Source
@@ -43,8 +43,6 @@ class MediaPlayer
             MediaEnded?.Invoke(this, EmptyArgs);
         };
         PlaybackSession = new(this, mp);
-        MediaPlayerManager.Instance.Register(this);
-        self = this;
         
     }
 
@@ -108,8 +106,26 @@ class MediaPlayer
         }
     }
     public event Action<MediaPlayer, object>? CurrentStateChanged;
+    public MediaPlayerState CurrentState
+    {
+        get => mp.IsPlaying ? MediaPlayerState.Playing : MediaPlayerState.Paused;
+    }
 }
-
+class MediaPlaybackCommandManager
+{
+#pragma warning disable CA1822 // Mark members as static
+    public bool IsEnabled
+#pragma warning restore CA1822 // Mark members as static
+    {
+        set
+        {
+            if (value)
+            {
+                throw new NotImplementedException("Enabling Media Playback is not implemented on Android.");
+            }
+        }
+    }
+}
 class MediaPlaybackSession
 {
     readonly AndroidMediaPlayer mp;

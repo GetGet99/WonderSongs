@@ -10,7 +10,14 @@ partial class WonderSongsSelectionPage : TemplateControl<Page>
     public WonderSongsSelectionPage(WonderSongsPlayable playable)
     {
         Playable = playable;
+#if !HAS_UNO
+        this.FirstLoadedEv(x =>
+        {
+            playable.InitializeWithWindow((nint)x.XamlRoot.ContentIslandEnvironment.AppWindowId.Value);
+        });
+#endif
     }
+
     TaskCompletionSource<Song>? currentTCS;
     public async Task<Song> SelectNextSongAsync()
     {

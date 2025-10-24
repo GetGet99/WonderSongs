@@ -8,14 +8,14 @@
         <!-- Display name -->
         <ApplicationTitle>WonderSongs</ApplicationTitle>
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.WonderSongs</ApplicationId>
+        <ApplicationId>com.GetGet99.WonderSongs</ApplicationId>
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
         <!-- Package Publisher -->
         <ApplicationPublisher>Get</ApplicationPublisher>
         <!-- Package Description -->
-        <Description>WonderSongs powered by Uno Platform.</Description>
+        <Description>WonderSongs is a music player that plays the playlist of songs in a semi-random order.</Description>
         <RootNamespace>WonderSongs</RootNamespace>
         <!--
       If you encounter this error message:

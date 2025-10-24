@@ -1,3 +1,7 @@
+using System.Runtime.InteropServices;
+using Windows.Media;
+using WinRT;
+
 namespace WonderSongs.Core;
 [AutoProperty]
 partial class WonderSongsPlayable
@@ -15,8 +19,12 @@ partial class WonderSongsPlayable
         IsPlayingProperty = isplaying;
         MediaPlayer.CurrentStateChanged += delegate
         {
-            isplaying.CurrentValue = MediaPlayer.PlaybackSession.PlaybackState is MediaPlaybackState.Playing;
+            isplaying.CurrentValue = MediaPlayer.CurrentState is MediaPlayerState.Playing;
         };
+
+#if ANDROID
+        InitializeWithWindow(default);
+#endif
         MediaPlayer.IsLoopingEnabled = false;
         MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
         Songs.AddRange(initialList);
@@ -28,6 +36,37 @@ partial class WonderSongsPlayable
 
     }
     bool hasCrossed;
+    public void InitializeWithWindow(nint hwnd)
+    {
+#if WINDOWS
+        
+        var mediaControls = SystemMediaTransportControlsInterop.GetForWindow(hwnd);
+#elif ANDROID
+        var mediaControls = SystemMediaTransportControls.Instance;
+#endif
+#if WINDOWS || ANDROID
+        MediaPlayer.CommandManager.IsEnabled = false;
+        mediaControls.IsEnabled = true;
+        mediaControls.IsPlayEnabled = true;
+        mediaControls.IsPauseEnabled = true;
+        IsPlayingProperty.ApplyAndRegisterForNewValue((_, x) =>
+        {
+            mediaControls.PlaybackStatus = x ? MediaPlaybackStatus.Playing : MediaPlaybackStatus.Paused;
+        });
+        mediaControls.ButtonPressed += (_, e) =>
+        {
+            switch (e.Button)
+            {
+                case SystemMediaTransportControlsButton.Play:
+                    Play();
+                    break;
+                case SystemMediaTransportControlsButton.Pause:
+                    Pause();
+                    break;
+            }
+        };
+#endif
+    }
 
     private async void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
     {
@@ -156,3 +195,27 @@ partial class WonderSongsPlayable
         Play(); // triggers next song dialog
     }
 }
+//#if WINDOWS
+//[ComImport]
+//[Guid("DDB0472D-C911-4A1F-86D9-DC3D71A95F5A")]
+//[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+//interface ISystemMediaTransportControlsInterop
+//{
+//    IntPtr GetForWindow(IntPtr hwnd, [In] ref Guid riid);
+//}
+//class MediaTransportControlsHelper
+//{
+//    private static Guid IID_ISystemMediaTransportControls = new Guid("DDB0472D-C911-4A1F-86D9-DC3D71A95F5A");
+
+//    public static SystemMediaTransportControls GetSystemMediaTransportControls(IntPtr hwnd)
+//    {
+//        //var interop = (ISystemMediaTransportControlsInterop)Activator.CreateInstance(
+//        //    Type.GetTypeFromCLSID(new Guid("DDB0472D-C911-4A1F-86D9-DC3D71A95F5A"))
+//        //);
+//        var interop = ActivationFactory.Get("Windows.Media.SystemMeriaTransportControls").As<ISystemMediaTransportControlsInterop>();
+//        IntPtr controlsPtr = interop.Vftbl.GetForWindow(hwnd, ref IID_ISystemMediaTransportControls);
+//        return Marshal.GetObjectForIUnknown(controlsPtr) as SystemMediaTransportControls;
+//    }
+//}
+
+//#endif

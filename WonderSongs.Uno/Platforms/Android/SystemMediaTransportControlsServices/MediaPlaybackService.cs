@@ -5,6 +5,7 @@ using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
 using Java.Lang;
+using Windows.Media;
 using AndroidApp = Android.App.Application;
 using AndroidResource = global::Android.Resource;
 using NotificationCompat = AndroidX.Core.App.NotificationCompat;
@@ -48,6 +49,7 @@ class MediaPlaybackService : Service
         {
             var p = hasPausedByUser;
             MediaPlayerManager.Instance.Pause();
+            SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Pause);
             UpdateNotification(false);
 
             // do not change hasPausedByUser as this is an automatic pause
@@ -58,6 +60,7 @@ class MediaPlaybackService : Service
             if (!hasPausedByUser)
             {
                 MediaPlayerManager.Instance.Play();
+                SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Play);
                 UpdateNotification(true);
             }
         };
@@ -72,20 +75,27 @@ class MediaPlaybackService : Service
         if (action == "ACTION_PLAY")
         {
             MediaPlayerManager.Instance.Play();
-            UpdateNotification(true);
+            //UpdateNotification(true); // will be updated via event
+            SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Play);
         }
         else if (action == "ACTION_PAUSE")
         {
             MediaPlayerManager.Instance.Pause();
-            UpdateNotification(false);
+            //UpdateNotification(false); // will be updated via event
+            SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Pause);
         }
         else
         {
             // Initial startup
-            UpdateNotification(MediaPlayerManager.Instance.CurrentPlayer?.PlaybackSession.PlaybackState is MediaPlaybackState.Playing);
+            //UpdateNotification(MediaPlayerManager.Instance.CurrentPlayer?.PlaybackSession.PlaybackState is MediaPlaybackState.Playing);
             MediaPlayerManager.Instance.CurrentStateChanegd += delegate
             {
                 UpdateNotification(MediaPlayerManager.Instance.CurrentPlayer?.PlaybackSession.PlaybackState is MediaPlaybackState.Playing);
+            };
+            UpdateNotification(SystemMediaTransportControls.Instance.PlaybackStatus is MediaPlaybackStatus.Playing);
+            SystemMediaTransportControls.ServiceBindings.PlaybackStatusFromUIChanged += delegate
+            {
+                UpdateNotification(SystemMediaTransportControls.Instance.PlaybackStatus is MediaPlaybackStatus.Playing);
             };
         }
 
@@ -95,7 +105,7 @@ class MediaPlaybackService : Service
     public void UpdateNotification(bool isPlaying)
     {
         hasPausedByUser = !isPlaying;
-        var appName = AndroidApp.Context.ApplicationInfo.LoadLabel(PackageManager)?.ToString() ?? "WonderSongs";
+        var appName = AndroidApp.Context.ApplicationInfo!.LoadLabel(PackageManager!)?.ToString() ?? "WonderSongs";
         UpdatePlaybackState(isPlaying);
 
         var playPauseAction = BuildPlayPauseAction(isPlaying);
@@ -103,13 +113,13 @@ class MediaPlaybackService : Service
         var mediaStyle = new AndroidX.Media.App.NotificationCompat.MediaStyle();
 
         _builder = new NotificationCompat.Builder(this, ChannelId)
-            .SetContentTitle(appName)
-            .SetContentText(isPlaying ? "Playing" : "Paused")
-            .SetSmallIcon(global::Android.Resource.Drawable.IcMediaPlay)
-            .SetOnlyAlertOnce(true)
-            .SetOngoing(true)
-            .SetStyle(mediaStyle.SetMediaSession(_mediaSession?.SessionToken))
-            .AddAction(playPauseAction);
+            !.SetContentTitle(appName)
+            !.SetContentText(isPlaying ? "Playing" : "Paused")
+            !.SetSmallIcon(global::Android.Resource.Drawable.IcMediaPlay)
+            !.SetOnlyAlertOnce(true)
+            !.SetOngoing(true)
+            !.SetStyle(mediaStyle.SetMediaSession(_mediaSession?.SessionToken))
+            !.AddAction(playPauseAction)!;
 
         var notification = _builder.Build();
         StartForeground(NotificationId, notification);
@@ -129,6 +139,7 @@ class MediaPlaybackService : Service
 
     void CreateNotificationChannel()
     {
+#pragma warning disable CA1416 // NotificationChannel is Android O and above
         if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
         {
             var channel = new NotificationChannel(ChannelId, "Media Playback", NotificationImportance.Low)
@@ -136,9 +147,10 @@ class MediaPlaybackService : Service
                 Description = "Media playback controls",
                 LockscreenVisibility = NotificationVisibility.Public
             };
-            var manager = (NotificationManager)GetSystemService(NotificationService);
+            var manager = (NotificationManager)GetSystemService(NotificationService)!;
             manager.CreateNotificationChannel(channel);
         }
+#pragma warning restore CA1416
     }
 
     void UpdatePlaybackState(bool isPlaying)
@@ -148,11 +160,11 @@ class MediaPlaybackService : Service
                 PlaybackStateCompat.ActionPlay |
                 PlaybackStateCompat.ActionPause |
                 PlaybackStateCompat.ActionPlayPause)
-            .SetState(
+            !.SetState(
                 isPlaying ? PlaybackStateCompat.StatePlaying : PlaybackStateCompat.StatePaused,
                 PlaybackStateCompat.PlaybackPositionUnknown,
                 1.0f)
-            .Build();
+            !.Build();
 
         _mediaSession?.SetPlaybackState(state);
     }
@@ -169,12 +181,14 @@ class MediaPlaybackService : Service
         public override void OnPlay()
         {
             MediaPlayerManager.Instance.Play();
+            SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Play);
             _service.UpdateNotification(true);
         }
 
         public override void OnPause()
         {
             MediaPlayerManager.Instance.Pause();
+            SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Pause);
             _service.UpdateNotification(false);
         }
     }
@@ -184,11 +198,17 @@ class MediaPlaybackService : Service
 
         // Stop your playback
         MediaPlayerManager.Instance.CurrentPlayer?.Pause();
+        SystemMediaTransportControls.ServiceBindings.OnButtonPressed(SystemMediaTransportControlsButton.Pause);
 
         // Stop the foreground service completely
         StopForeground(true);
         StopSelf();
         JavaSystem.Exit(0);
     }
-
+    public static void Start()
+    {
+        var context = AndroidApp.Context;
+        var intent = new Intent(context, typeof(MediaPlaybackService));
+        context.StartForegroundService(intent);
+    }
 }
