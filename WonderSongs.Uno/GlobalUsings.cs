@@ -25,6 +25,8 @@ global using Windows.Foundation;
 global using Windows.UI;
 #if WINAPPSDK_PACKAGED
 global using Windows.UI.Xaml;
+global using WinRT.Interop;
+global using U5BFA.Libraries;
 #endif
 global using static Get.Data.Properties.AutoTyper;
 global using static Get.Data.XACL.QuickBindingExtension;
@@ -79,6 +81,18 @@ static class UIFuncs
         return new SolidColorBrush(color) { Opacity = opacity };
     }
     public static T Center_Horizontal<T>(this T element)
+        where T : FrameworkElement
+    {
+        element.HorizontalAlignment = HorizontalAlignment.Center;
+        return element;
+    }
+    public static T CenterV<T>(this T element)
+        where T : FrameworkElement
+    {
+        element.VerticalAlignment = VerticalAlignment.Center;
+        return element;
+    }
+    public static T CenterH<T>(this T element)
         where T : FrameworkElement
     {
         element.HorizontalAlignment = HorizontalAlignment.Center;
@@ -176,6 +190,14 @@ static class UIFuncs
         element.FontFamily = new FontFamily("Calibri");
         element.FontStyle = FontStyle.Italic;
         return element;
+    }
+    extension (FrameworkElement fe)
+    {
+        public bool IsVisible
+        {
+            get => fe.Visibility is Visibility.Visible;
+            set => fe.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }
 public partial class VStack : StackPanel, IEnumerable<UIElement>, IEnumerable

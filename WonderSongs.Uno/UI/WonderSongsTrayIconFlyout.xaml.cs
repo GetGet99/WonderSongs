@@ -1,0 +1,24 @@
+#if !HAS_UNO
+using WonderSongs.Core;
+
+namespace WonderSongs.UI;
+
+[QuickMarkup("""
+    <root IsBackdropEnabled BackdropKind=Acrylic>
+        <TrayIconFlyoutIsland Height=300>
+            <WonderSongsNowPlaying(`playable`) SmallMode />
+        </TrayIconFlyoutIsland>
+    </root>
+    """)]
+partial class WonderSongsTrayIconFlyout : TrayIconFlyout
+{
+    WonderSongsPlayable playable;
+    public WonderSongsTrayIconFlyout(WonderSongsPlayable playable)
+    {
+        App.CurrentTray = this;
+        this.playable = playable;
+        Init();
+        InitializeComponent();
+    }
+}
+#endif

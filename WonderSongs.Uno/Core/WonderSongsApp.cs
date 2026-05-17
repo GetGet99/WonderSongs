@@ -89,7 +89,8 @@ static class WonderSongsApp
         var files = await directory.GetFilesAsync();
         var audioFiles = files.Where(f =>
             f.ContentType.StartsWith("audio/", StringComparison.OrdinalIgnoreCase) ||
-            f.ContentType.StartsWith("music/", StringComparison.OrdinalIgnoreCase)
+            f.ContentType.StartsWith("music/", StringComparison.OrdinalIgnoreCase) ||
+            f.FileType == ".m4a"
         ).ToArray();
 
         var songTasks = audioFiles.Select(Song.CreateAsync).ToArray();

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Get.UI.Data;
+
 [AutoProperty]
 public partial class OrientedStack : NamedPanel
 {
@@ -24,7 +25,7 @@ public partial class OrientedStack : NamedPanel
     public OrientedStack()
     {
         OrientationProperty.ValueChanged += OnOrientationChanged;
-        
+
     }
     public OrientedStack(Orientation orientation = default, double spacing = 0) : this()
     {
@@ -51,6 +52,10 @@ public partial class OrientedStack : NamedPanel
             LengthValueProperty.SetValue(obj, newValue.Value);
         if (LengthTypeProperty.GetValue(obj) != newValue.GridUnitType)
             LengthTypeProperty.SetValue(obj, newValue.GridUnitType);
+        if (newValue.IsStar && newValue.Value <= 0)
+        {
+            throw new System.InvalidOperationException();
+        }
         (VisualTreeHelper.GetParent(obj) as OrientedStack)?.InvalidateArrange();
     }
     void OnOrientationChanged(Orientation oldValue, Orientation newValue)
@@ -221,11 +226,11 @@ public partial class OrientedStack : NamedPanel
         panelRemainingSize.Along -= totalAbsolutePixel;
         panelRemainingSize.Along = Math.Max(panelRemainingSize.Along, 0);
         double alongOffset = 0;
-        
+
         // To avoid divide by 0
         if (totalStar is 0) totalStar = 1;
         var starLength = panelRemainingSize.Along / totalStar;
-        
+
         foreach (var child in Children)
         {
             if (child.Visibility is not Visibility.Visible) continue;

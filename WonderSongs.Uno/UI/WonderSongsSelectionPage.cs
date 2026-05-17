@@ -3,13 +3,31 @@ using WonderSongs.Core;
 
 namespace WonderSongs.UI;
 
-partial class WonderSongsSelectionPage : TemplateControl<Page>
+[QuickMarkup("""
+    <root Padding=16 CenterH CenterV>
+        <VStack Spacing=16>
+            nextSongTextBlock = <TextBlock Text=`NextSongMessages[0]` CenterH />
+            <VStack Spacing=16 Margin=`new(16, 0, 16, 0)` XYFocusKeyboardNavigation=Enabled>
+                foreach (var button in `buttons`)
+                    `button`
+            </VStack>
+        </VStack>
+    </root>
+    """)]
+partial class WonderSongsSelectionPage : Page
 {
     Button[] buttons = [new(), new(), new()];
     WonderSongsPlayable Playable { get; }
     public WonderSongsSelectionPage(WonderSongsPlayable playable)
     {
         Playable = playable;
+        foreach (var button in buttons)
+        {
+            button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            OrientedStack.LengthProperty.SetValue(button, Star(1));
+            button.ClickEv(x => currentTCS?.SetResult((Song)x.Tag));
+        }
+        Init();
 #if !HAS_UNO
         this.FirstLoadedEv(x =>
         {
@@ -85,31 +103,4 @@ partial class WonderSongsSelectionPage : TemplateControl<Page>
         "Your ears will thank you for this one.",
         "Choose your champion — may the best track win."
     };
-
-
-    TextBlock nextSongTextBlock = new();
-
-    // Update Initialize to use the global TextBlock
-    protected override void Initialize(Page rootElement)
-    {
-        rootElement.Padding = new(16);
-        rootElement.HorizontalAlignment = HorizontalAlignment.Center;
-        rootElement.VerticalAlignment = VerticalAlignment.Center;
-        nextSongTextBlock.Text = NextSongMessages[0];
-        rootElement.Content = new VStack(spacing: 16)
-        {
-            nextSongTextBlock.Center_Horizontal(),
-            new VStack(spacing: 16) { Margin = new(16, 0, 16, 0)}
-            .WithCustomCode(x =>
-            {
-                foreach (var button in buttons)
-                {
-                    button.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    OrientedStack.LengthProperty.SetValue(button, Star(1));
-                    button.ClickEv(x => currentTCS?.SetResult((Song)x.Tag));
-                    x.Children.Add(button);
-                }
-            })
-        };
-    }
 }

@@ -9,7 +9,7 @@ using WonderSongs.Droid;
 namespace WonderSongs.UI;
 static class ClockFactory
 {
-    public static TextBlock Clock()
+    public static TextBlock CreateClock()
     {
         var clock = new TextBlock
         {

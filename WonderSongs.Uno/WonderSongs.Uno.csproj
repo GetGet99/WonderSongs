@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Uno.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net9.0-android;net9.0-windows10.0.26100;net9.0-browserwasm;net9.0-desktop</TargetFrameworks>
+        <TargetFrameworks>net10.0-android;net10.0-windows10.0.26100;net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
 
         <OutputType>Exe</OutputType>
         <UnoSingleProject>true</UnoSingleProject>
@@ -37,10 +37,26 @@
             Lottie;
             Toolkit;
             SkiaRenderer;
-            MediaPlayerElement;
+            MediaPlayerElement
         </UnoFeatures>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Get.Data" />
+        <PackageReference Include="Get.Data" />
+        <PackageReference Include="QuickMarkup" />
+    </ItemGroup>
+    <ItemGroup Condition="$(TargetFramework)=='net10.0-windows10.0.26100'">
+        <PackageReference Include="0x5BFA.TrayIconFlyout.WinUI" />
+        <PackageReference Include="Microsoft.WindowsAppSDK" />
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="UI\WonderSongsTrayIconFlyout.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="UI\WonderSongsSelectionFlyout.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 </Project>

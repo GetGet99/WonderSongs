@@ -17,6 +17,7 @@ public partial class App : Application
     }
 
     protected Window? MainWindow { get; private set; }
+    public static Style DefaultWindows11TrayIconFlyoutStyle => (Style)Current.Resources["DefaultWindows11TrayIconFlyoutStyle"];
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
@@ -144,4 +145,8 @@ public partial class App : Application
 #endif
 #endif
     }
+#if WINAPPSDK_PACKAGED
+    internal static WonderSongsTrayIconFlyout CurrentTray { get; set; }
+    public static SystemTrayIcon TrayIcon { get; set; }
+#endif
 }

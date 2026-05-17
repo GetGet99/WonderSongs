@@ -35,10 +35,36 @@ partial class WonderSongsHomeWindow : WonderSongsWindow
             {
                 var selection = new SingleWindowPage(playable);
                 new WonderSongsWindow() { Content = selection }.AppWindow.Show();
-            } else
+            }
+            else
             {
 
+#if WINAPPSDK_PACKAGED
+                var selection = new WonderSongsSelectionFlyout(playable);
+                var tray = new WonderSongsTrayIconFlyout(playable);
+
+                var trayIcon = new SystemTrayIcon(
+                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\icon.ico",
+                    "WonderSongs",
+                    Guid.NewGuid()
+                );
+                trayIcon.LeftClicked += Icon_LeftClicked;
+                trayIcon.IsVisible = true;
+                trayIcon.Show();
+                App.TrayIcon = trayIcon;
+
+                void Icon_LeftClicked(object? sender, MouseEventReceivedEventArgs e)
+                {
+                    if (tray.IsOpen)
+                        // this branch is never taken
+                        tray.Hide();
+                    else
+                        // this is called, but RootGrid is null so it does nothing
+                        tray.Show();
+                }
+#else
                 var selection = new WonderSongsSelectionWindow(playable);
+#endif
                 playable.LifeCycle(selection.SelectNextSongAsync, delegate { });
             }
         };
