@@ -1,4 +1,5 @@
 #if WINAPPSDK_PACKAGED
+using System.Reflection;
 using Microsoft.UI.Windowing;
 using WonderSongs.Core;
 
@@ -35,11 +36,21 @@ partial class WonderSongsSelectionFlyout : TrayIconFlyout
         };
 
         page.NextSongSelected += Hide;
+        var hostField = typeof(TrayIconFlyout).GetField("_host", BindingFlags.NonPublic | BindingFlags.Instance);
+        var field = hostField!.GetValue(this);
+        var method = field!.GetType().GetMethod("NavigateFocus", BindingFlags.NonPublic | BindingFlags.Instance);
+        void NavigateFocus()
+        {
+            method!.Invoke(field, []);
+        }
         KeyboardHook.Instance.ModifierPressed += delegate
         {
             if (IsOpen)
             {
-                page.Focus(FocusState.Keyboard);
+                WinWrapper.Windowing.Window.FromWindowHandle(
+                    (nint)page.XamlRoot.ContentIslandEnvironment.AppWindowId.Value
+                ).SetAsForegroundWindow();
+                NavigateFocus();
                 return true;
             }
             return false;
