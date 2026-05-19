@@ -86,6 +86,13 @@ static class UIFuncs
         element.HorizontalAlignment = HorizontalAlignment.Center;
         return element;
     }
+    public static void Tight(this TextBlock element)
+    {
+#if HAS_UNO
+#else
+        element.TextLineBounds = TextLineBounds.Tight;
+#endif
+    }
     public static T CenterV<T>(this T element)
         where T : FrameworkElement
     {

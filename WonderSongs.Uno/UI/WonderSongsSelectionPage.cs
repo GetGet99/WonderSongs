@@ -4,6 +4,7 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
+    using Get.Symbols;
     bool ShowFocusHint = false;
 
     <root Padding=16 CenterH CenterV XYFocusKeyboardNavigation=Enabled>
@@ -13,14 +14,14 @@ namespace WonderSongs.UI;
                 `button`
             if (`ShowFocusHint`) {
                 <HStack Spacing=8 CenterH>
-                    <KeyBlock Key="R-ALT" />
-                    <TextBlock Text="Move to focus to this flyout" CenterV Opacity=0.75 />
-                </HStack>
-                <HStack Spacing=8 CenterH>
-                    <KeyBlock Key="1" />
-                    <KeyBlock Key="2" />
-                    <KeyBlock Key="3" />
-                    <TextBlock Text="Select song" CenterV Opacity=0.75 />
+                    <HStack Spacing=4>
+                        <KeyBlock Key="R-ALT" />
+                        <SymbolExIcon(Add) FontSize=12 />
+                        <KeyBlock Key="1" />
+                        <KeyBlock Key="2" />
+                        <KeyBlock Key="3" />
+                    </HStack>
+                    <TextBlock Text="Select song" CenterV Opacity=0.75 Tight />
                 </HStack>
             }
         </VStack>
