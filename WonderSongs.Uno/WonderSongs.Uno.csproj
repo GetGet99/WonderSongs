@@ -49,6 +49,7 @@
     <ItemGroup Condition="$(TargetFramework)=='net10.0-windows10.0.26100'">
         <PackageReference Include="0x5BFA.TrayIconFlyout.WinUI" />
         <PackageReference Include="Microsoft.WindowsAppSDK" />
+        <PackageReference Include="WinWrapper.Windowing" />
     </ItemGroup>
     <ItemGroup>
       <Page Update="UI\WonderSongsTrayIconFlyout.xaml">

@@ -34,6 +34,19 @@ partial class WonderSongsSelectionPage : Page
             playable.InitializeWithWindow((nint)x.XamlRoot.ContentIslandEnvironment.AppWindowId.Value);
         });
 #endif
+        KeyDown += WonderSongsSelectionPage_KeyDown;
+    }
+
+    private void WonderSongsSelectionPage_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key is >=VirtualKey.Number1 and <=VirtualKey.Number3)
+        {
+            currentTCS?.SetResult((Song)(buttons[e.Key - VirtualKey.Number1]).Tag);
+        }
+        else if (e.Key is >= VirtualKey.NumberPad1 and <= VirtualKey.NumberPad3)
+        {
+            currentTCS?.SetResult((Song)(buttons[e.Key - VirtualKey.NumberPad1]).Tag);
+        }
     }
 
     TaskCompletionSource<Song>? currentTCS;

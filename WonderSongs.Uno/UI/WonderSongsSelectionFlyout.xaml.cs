@@ -5,7 +5,7 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
+    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus ActivationMode=NoActivateOnOpen>
         <TrayIconFlyoutIsland>
             page = <WonderSongsSelectionPage(`playable`) Margin=16 />
         </TrayIconFlyoutIsland>
@@ -35,6 +35,15 @@ partial class WonderSongsSelectionFlyout : TrayIconFlyout
         };
 
         page.NextSongSelected += Hide;
+        KeyboardHook.Instance.ModifierPressed += delegate
+        {
+            if (IsOpen)
+            {
+                page.Focus(FocusState.Keyboard);
+                return true;
+            }
+            return false;
+        };
     }
     public Task<Song> SelectNextSongAsync() => page.SelectNextSongAsync();
 }

@@ -5,7 +5,7 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=RightEdgeAlignedTop !HideOnLostFocus ActivationMode=NeverActivate>
+    <root IsBackdropEnabled BackdropKind=Acrylic Placement=TopEdgeAlignedRight !HideOnLostFocus ActivationMode=NeverActivate PopupDirection=RightToLeft>
         <TrayIconFlyoutIsland>
             nowPlaying = <WonderSongsNowPlaying Margin=8 />
         </TrayIconFlyoutIsland>
@@ -15,7 +15,7 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
 {
     bool deferShow;
     int showVersion;
-
+    
     public WonderSongsNowPlayingFlyout()
     {
         Init();
@@ -49,7 +49,7 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
 
     async Task HideAfterDelayAsync(int version)
     {
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        await Task.Delay(TimeSpan.FromSeconds(7));
         if (!DispatcherQueue.HasThreadAccess)
         {
             DispatcherQueue.TryEnqueue(() =>

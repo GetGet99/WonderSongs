@@ -5,7 +5,7 @@ namespace WonderSongs.UI;
 
 [QuickMarkup("""
     <root Padding=16 CenterH CenterV>
-        <VStack Spacing=16>
+        <VStack Spacing=16 XYFocusKeyboardNavigation=Enabled>
             <TextBlock Text="WonderSongs" FontSize=48 CenterH />
             <TextBlock Text=`RandomMessage()` CenterH />
             songsPlace = <VStack Spacing=16 />
