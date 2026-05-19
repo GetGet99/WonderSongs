@@ -5,15 +5,16 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
+    <root IsBackdropEnabled BackdropKind=Acrylic Placement=RightEdgeAlignedTop !HideOnLostFocus ActivationMode=NeverActivate>
         <TrayIconFlyoutIsland>
-            contentHost = <Grid Margin=16 />
+            nowPlaying = <WonderSongsNowPlaying Margin=8 />
         </TrayIconFlyoutIsland>
     </root>
     """)]
 partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
 {
     bool deferShow;
+    int showVersion;
 
     public WonderSongsNowPlayingFlyout()
     {
@@ -36,12 +37,31 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
             return;
         }
 
-        contentHost.Children.Clear();
-        contentHost.Children.Add(new WonderSongsNowPlaying(song));
+        nowPlaying.Song = song;
 
         Show();
         if (!IsOpen)
             deferShow = true;
+
+        var version = ++showVersion;
+        _ = HideAfterDelayAsync(version);
+    }
+
+    async Task HideAfterDelayAsync(int version)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(3));
+        if (!DispatcherQueue.HasThreadAccess)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (version == showVersion)
+                    Hide();
+            });
+            return;
+        }
+
+        if (version == showVersion)
+            Hide();
     }
 }
 #endif
