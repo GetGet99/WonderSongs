@@ -163,9 +163,23 @@ A standalone backtick expression that is `Action<T>` runs once with the created 
 foreach (var i in ..3) { <TextBlock Text=/-$"Row {i}"-/ /> }
 foreach (var i in 1..4) { <TextBlock Text=/-$"Item {i}"-/ /> }
 
-// Iterable (evaluated once; not reactive to collection changes)
-foreach (var item in items) { <TextBlock Text=/-item-/ /> }
+// Iterable (evaluated once for non-observable collection; reactive to collection changes otherwise)
+foreach (var item in items) { <TextBlock Text=`item` /> }
 ```
+
+### Conditional rendering
+```
+if (`condition`) {
+    <Button Content="True Ruote" />
+    <Button Content="Can have multiple" />
+} else if (`condition 2`) {
+    <TextBlock Content="Else if Ruote" />
+    <TextBlock Content="Else if Ruote" />
+} else
+    <TextBlock Content="Else Ruote, can ignore {curry brackets} when only one item" />
+```
+
+Note: for elements that expects single child item, must have `else` condition, and enforced for all branches to have a single child item.
 
 ### Root Tag With Properties
 
@@ -201,12 +215,12 @@ Effect(() => { ... }, ref1, ref2);  // runs when any listed ref changes
 
 `ReferenceTracker.NoCapture(() => expr)` reads without tracking dependencies.
 
-## Best Practices From This Project
+## Best Practices From QuickMarkup
 
 - Define **global usings** for common namespaces (`Windows.UI.Xaml.Controls`, `QuickMarkup.Infra`, `static QuickMarkup.Infra.QuickRefs`, etc.) so markup stays clean.
 - Define **C# extension methods** (`CenterH`, `CenterV`, `Center`, `Right`, `Bottom`, `StretchH`, `StretchV`) for layout shortcuts.
 - Define **C# extension properties** (e.g., `IsVisible`, `Grid_Row`, `Grid_Column`) to work around QuickMarkup not supporting attached properties directly.
-- Use `ThemeResources.Get<Brush>("ResourceKey", element).CreateReadOnlyReference()` in `<setup>` for theme-aware brushes. Requires `<PackageReference Include="Get.UI.Data.UWP.NET9" Version="1.0.8" />` and the extension below.
+- Use `ThemeResources.Get<Brush>("ResourceKey", element).CreateReadOnlyReference()` in `<setup>` for theme-aware brushes. Requires `<PackageReference Include="Get.UI.Data.UWP.NET9" Version="1.0.8" />` (Or WinUI3 equivalent) and the extension below.
 - The class must be `partial` (source generator emits the other part). The base class should be a UI element (`Page`, `Grid`, `StackPanel`, etc.).
 
 ### `CreateReadOnlyReference` Extension

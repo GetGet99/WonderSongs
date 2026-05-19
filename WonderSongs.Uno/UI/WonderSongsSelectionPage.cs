@@ -4,13 +4,25 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root Padding=16 CenterH CenterV>
+    bool ShowFocusHint = false;
+
+    <root Padding=16 CenterH CenterV XYFocusKeyboardNavigation=Enabled>
         <VStack Spacing=16>
             nextSongTextBlock = <TextBlock Text=`NextSongMessages[0]` CenterH />
-            <VStack Spacing=16 Margin=`new(16, 0, 16, 0)` XYFocusKeyboardNavigation=Enabled>
-                foreach (var button in `buttons`)
-                    `button`
-            </VStack>
+            foreach (var button in `buttons`)
+                `button`
+            if (`ShowFocusHint`) {
+                <HStack Spacing=8 CenterH>
+                    <KeyBlock Key="R-ALT" />
+                    <TextBlock Text="Move to focus to this flyout" CenterV Opacity=0.75 />
+                </HStack>
+                <HStack Spacing=8 CenterH>
+                    <KeyBlock Key="1" />
+                    <KeyBlock Key="2" />
+                    <KeyBlock Key="3" />
+                    <TextBlock Text="Select song" CenterV Opacity=0.75 />
+                </HStack>
+            }
         </VStack>
     </root>
     """)]
@@ -117,3 +129,17 @@ partial class WonderSongsSelectionPage : Page
         "Choose your champion — may the best track win."
     };
 }
+[QuickMarkup("""
+    string Key;
+    <root>
+        <Border Padding=`new(8,2,8,2)`
+            CornerRadius=4
+            BorderThickness=1
+            BorderBrush=`new SolidColorBrush(Microsoft.UI.Colors.Gray)`>
+            <TextBlock Text=`Key`
+                FontFamily="Consolas"
+                FontSize=12 />
+        </Border>
+    </root>
+    """)]
+partial class KeyBlock : UserControl;

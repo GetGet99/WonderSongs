@@ -8,7 +8,7 @@ namespace WonderSongs.UI;
 [QuickMarkup("""
     <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus ActivationMode=NoActivateOnOpen>
         <TrayIconFlyoutIsland>
-            page = <WonderSongsSelectionPage(`playable`) Margin=16 />
+            page = <WonderSongsSelectionPage(`playable`) Margin=16 ShowFocusHint />
         </TrayIconFlyoutIsland>
     </root>
     """)]
