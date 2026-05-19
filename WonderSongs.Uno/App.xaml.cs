@@ -23,6 +23,8 @@ public partial class App : Application
     {
 #if HAS_UNO
         SingleWindowApplication(args);
+#elif WINAPPSDK_PACKAGED
+        homeFlyout = new WonderSongsHomeFlyout();
 #else
         MainWindow = new WonderSongsHomeWindow();
         MainWindow.Activate();
@@ -148,5 +150,6 @@ public partial class App : Application
 #if WINAPPSDK_PACKAGED
     internal static WonderSongsTrayIconFlyout CurrentTray { get; set; }
     public static SystemTrayIcon TrayIcon { get; set; }
+    WonderSongsHomeFlyout homeFlyout;
 #endif
 }

@@ -1,113 +1,31 @@
 using WonderSongs.Core;
-#if ANDROID
-using MainActivity = WonderSongs.Droid.MainActivity;
-#endif
 
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    bool SmallMode = false;
-    private string FunnyMessage = `FunnyPlayingMessages[0]`;
-    private bool IsClockEnabled = false;
-    private bool IsPlaying = false;
-    <root>
-        <VStack Spacing=16 CenterV>
-            <TextBlock
-                Text=`FunnyMessage`
-                HorizontalAlignment=Stretch
-                TextAlignment=Center
-                TextWrapping=WrapWholeWords
-                FontSize=`SmallMode ? 16 : 32`
-            />
-            <HStack Spacing=16 CenterH>
-                <Button Width=48 Height=48 CornerRadius=24 @Click+=`playable.Play()` IsVisible=`!IsPlaying`>
-                    <SymbolIcon Symbol=Play />
-                </Button>
-                <Button Width=48 Height=48 CornerRadius=24 @Click+=`playable.Pause()` IsVisible=`IsPlaying`>
-                    <SymbolIcon Symbol=Pause />
-                </Button>
-            </HStack>
-        </VStack>
-        clockPlace = <Border Top Right Margin=16>
-            if (`IsClockEnabled`)
-                <HStack Spacing=16>
-                    <Button Content="Hide Clock" @Click+=`IsClockEnabled = false` />
-                    `Clock ??= ClockFactory.CreateClock()`
-                </HStack>
-            else
-                <HStack Spacing=16>
-                    <Button Content="Show Clock" @Click+=`IsClockEnabled = true` />
-                </HStack>
-        </Border>
+    <root Padding=12
+          RowDefinitions=<>
+            <RowDefinition Height=`GridLength.Auto` />
+            <RowDefinition Height=`GridLength.Auto` />
+          </>
+    >
+        <TextBlock Text="Now Playing"
+                   FontSize=14
+                   Opacity=0.7 />
+
+        <TextBlock Grid_Row=1
+                   Text=`s.Title`
+                   FontSize=20
+                //    FontWeight=`FontWeights.SemiBold`
+                   TextWrapping=Wrap />
     </root>
     """)]
 partial class WonderSongsNowPlaying : Grid
 {
-    WonderSongsPlayable playable;
-    TextBlock? Clock;
-    public void RefreshMessage()
+    Song s;
+    public WonderSongsNowPlaying(Song s)
     {
-        FunnyMessage = FunnyPlayingMessages[_random.Next(FunnyPlayingMessages.Length)];
-    }
-    public WonderSongsNowPlaying(WonderSongsPlayable playable)
-    {
-        this.playable = playable;
-        playable.IsPlayingProperty.ApplyAndRegisterForNewValue((_, x) =>
-        {
-            if (DispatcherQueue.HasThreadAccess)
-            {
-                Action();
-            }
-            else
-            {
-                DispatcherQueue.TryEnqueue(Action);
-            }
-            void Action()
-            {
-                IsPlaying = x;
-            }
-        });
+        this.s = s;
         Init();
-#if ANDROID
-        MainActivity.Resume += ClockDisplayUpdate;
-        MainActivity.Pause += ClockDisplayUpdate;
-        void ClockDisplayUpdate()
-        {
-            clockPlace.Visibility = MainActivity.IsPinned ? Visibility.Visible : Visibility.Collapsed;
-        }
-        ClockDisplayUpdate();
-#endif
     }
-
-    private static readonly string[] FunnyPlayingMessages = new string[]
-    {
-        "Nice choice — your collection has great taste.",
-        "And the beat goes on…",
-        "Let’s see if this one hits harder than the last!",
-        "Another banger? You’re on fire!",
-        "Your collection delivers again.",
-        "Certified vibe continuation.",
-        "Transitioning to your next sonic adventure.",
-        "Plot twist: this track might just top the last one.",
-        "Cue the next chapter of your personal soundtrack.",
-        "Music never sleeps… and apparently, neither do you.",
-        "Next up: something your speakers might fall in love with.",
-        "Brace yourself — another groove is coming.",
-        "Great pick!",
-        "Your collection never misses",
-        "You’re the DJ now. No pressure.",
-        "Hope your neighbors like this one too.",
-        "Continuing your main-character energy.",
-        "The vibe check continues…",
-        "Don’t worry, this next one also slaps.",
-        "Stay tuned — your rhythm journey continues.",
-        "You really trust that random picker, huh?",
-        "One song ends, another legend begins.",
-        "Playlist destiny unfolding in real time.",
-        "RNGesus has blessed your next track.",
-        "Music’s rolling — just vibe with it.",
-        "Can’t stop, won’t stop… playing your collection’s finest."
-    };
-
-    private static readonly Random _random = new();
 }

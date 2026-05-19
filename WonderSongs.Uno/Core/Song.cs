@@ -8,13 +8,17 @@ class Song
     }
     StorageFile File { get; }
     public required string Title { get; init; }
+    /// <remarks>Can be empty string</remarks>
+    public required string Artist { get; init; }
     public static async Task<Song> CreateAsync(StorageFile sf)
     {
 #if HAS_UNO
         var title = default(string);
+        var artist = "";
 #else
         var props = await sf.Properties.GetMusicPropertiesAsync();
         var title = props.Title;
+        var artist = props.Artist ?? "";
 #endif
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -26,7 +30,8 @@ class Song
         }
         return new Song(sf)
         {
-            Title = title
+            Title = title,
+            Artist = artist
         };
     }
 #if ANDROID

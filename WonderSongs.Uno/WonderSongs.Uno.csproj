@@ -40,6 +40,7 @@
             MediaPlayerElement
         </UnoFeatures>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Get.Data" />
@@ -56,6 +57,16 @@
     </ItemGroup>
     <ItemGroup>
       <Page Update="UI\WonderSongsSelectionFlyout.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="UI\WonderSongsHomeFlyout.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="UI\WonderSongsNowPlayingFlyout.xaml">
         <Generator>MSBuild:Compile</Generator>
       </Page>
     </ItemGroup>

@@ -12,7 +12,8 @@ namespace WonderSongs.UI;
             <TextBlock Text="or" CenterH />
             <Button Content="Select folder of music" @Click+=`SelectFolderOfMusic()` CenterH />
             if (`!HasUno`)
-                SWA_Mode = <CheckBox Content="Single Window Application Mode" IsChecked=`HasUno` />
+                SWA_Mode = <CheckBox Content="Single Window Application Mode" IsChecked=`HasUno` CenterH />
+            <Button Content="Exit" @Click+=`Environment.Exit(0)` CenterH />
         </VStack>
     </root>
     """)]
@@ -25,6 +26,8 @@ partial class WonderSongsHomePage : Page
         false
 #endif
         ;
+    public event Action? UIInitialized;
+    public event Action? OnSelected;
     public WonderSongsHomePage()
     {
         QuickMarkup.Infra.ReactiveScheduler.AddTickCallbackForCurrentThread(
@@ -42,10 +45,12 @@ partial class WonderSongsHomePage : Page
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 }.ClickEv(async delegate
                 {
+                    OnSelected?.Invoke();
                     var collection = await WonderSongsApp.OpenFromCollectionAsync(folder);
                     OnSuccess?.Invoke(collection, SWA_Mode.IsChecked ?? false);
                 }));
             }
+            UIInitialized?.Invoke();
         }
     }
     string RandomMessage()

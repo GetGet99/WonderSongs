@@ -19,13 +19,10 @@ partial class WonderSongsSelectionFlyout : TrayIconFlyout
         this.playable = playable;
         Init();
 
-
-        // my intention:
-        page.NextSongAvaliable += Show;
-        // workaround logic
         bool deferShow = false;
-        page.NextSongAvaliable += () =>
+        page.NextSongAvaliable += async () =>
         {
+            var a = this.IsLoaded;
             Show();
             if (!IsOpen) deferShow = true;
         };

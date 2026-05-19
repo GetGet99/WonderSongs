@@ -1,37 +1,36 @@
+#if WINAPPSDK_PACKAGED
 using Microsoft.UI.Windowing;
 using WonderSongs.Core;
 
 namespace WonderSongs.UI;
 
-partial class WonderSongsHomeWindow : WonderSongsWindow
+[QuickMarkup("""
+    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
+        <TrayIconFlyoutIsland Width=500>
+            homePage = <WonderSongsHomePage Margin=`new(16,32,16,32)` />
+        </TrayIconFlyoutIsland>
+    </root>
+    """)]
+partial class WonderSongsHomeFlyout : TrayIconFlyout
 {
-    public WonderSongsHomeWindow()
+    public WonderSongsHomeFlyout()
     {
-#if !HAS_UNO
-        var width = 500; var height = 400;
-        var primary = DisplayArea.GetFromPoint(default, DisplayAreaFallback.Primary);
-        AppWindow.Resize(new()
+        Init();
+        bool a = false;
+        homePage.UIInitialized += () =>
         {
-            Width = width,
-            Height = height
-        });
-        AppWindow.MoveAndResize(new()
+            if (a) Show();
+            a = true;
+        };
+        Loaded += delegate
         {
-            X = (int)((primary.WorkArea.X + primary.WorkArea.Width - width) / 2),
-            Y = (int)((primary.WorkArea.Y + primary.WorkArea.Height - height) / 2),
-            Width = (int)width,
-            Height = (int)height
-        });
-#endif
-        var homePage = new WonderSongsHomePage();
-        Content = homePage;
+            if (a) Show();
+            a = true;
+        };
+        homePage.OnSelected += Hide;
         homePage.OnSuccess += (playable, swa) =>
         {
-#if !HAS_UNO
-            AppWindow.Hide();
-#else
-            Close();
-#endif
+            Hide();
             if (swa)
             {
                 var selection = new SingleWindowPage(playable);
@@ -74,3 +73,4 @@ partial class WonderSongsHomeWindow : WonderSongsWindow
         };
     }
 }
+#endif

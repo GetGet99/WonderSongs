@@ -6,7 +6,7 @@ namespace WonderSongs.UI;
 [QuickMarkup("""
     <root IsBackdropEnabled BackdropKind=Acrylic>
         <TrayIconFlyoutIsland Height=300>
-            <WonderSongsNowPlaying(`playable`) SmallMode />
+            <WonderSongsMediaControlUI(`playable`) SmallMode />
         </TrayIconFlyoutIsland>
     </root>
     """)]

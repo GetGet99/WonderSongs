@@ -25,7 +25,7 @@ partial class SingleWindowPage : Page
             var selection = new WonderSongsSelectionPage(playable);
             Content = selection;
             //var (refresh, waitingUI) = CreateUI();
-            var waitingUI = new WonderSongsNowPlaying(playable);
+            var waitingUI = new WonderSongsMediaControlUI(playable);
             selection.NextSongAvaliable += delegate
             {
                 Content = selection;

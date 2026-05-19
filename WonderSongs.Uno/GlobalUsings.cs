@@ -198,6 +198,11 @@ static class UIFuncs
             get => fe.Visibility is Visibility.Visible;
             set => fe.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
         }
+        public int Grid_Row
+        {
+            get => Grid.GetRow(fe);
+            set => Grid.SetRow(fe, value);
+        }
     }
 }
 public partial class VStack : StackPanel, IEnumerable<UIElement>, IEnumerable
