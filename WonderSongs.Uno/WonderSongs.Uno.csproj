@@ -17,6 +17,8 @@
         <!-- Package Description -->
         <Description>WonderSongs is a music player that plays the playlist of songs in a semi-random order.</Description>
         <RootNamespace>WonderSongs</RootNamespace>
+        <UnoIconForegroundFile>Assets/wondersongs.png</UnoIconForegroundFile>
+        <!--<UnoSplashScreenFile>Assets/wondersongs.png</UnoSplashScreenFile>-->
         <!--
       If you encounter this error message:
 
@@ -52,23 +54,10 @@
         <PackageReference Include="WinWrapper.Windowing" />
     </ItemGroup>
     <ItemGroup>
-      <Page Update="UI\WonderSongsTrayIconFlyout.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
+      <Content Update="Assets\wondersongs.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <ItemGroup>
-      <Page Update="UI\WonderSongsSelectionFlyout.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-    <ItemGroup>
-      <Page Update="UI\WonderSongsHomeFlyout.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
-    </ItemGroup>
-    <ItemGroup>
-      <Page Update="UI\WonderSongsNowPlayingFlyout.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </Page>
     </ItemGroup>
 </Project>

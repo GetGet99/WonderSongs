@@ -6,13 +6,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus ActivationMode=NoActivateOnOpen>
+    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus ActivationMode=NoActivateOnOpen>
         <TrayIconFlyoutIsland>
             page = <WonderSongsSelectionPage(`playable`) Margin=16 ShowFocusHint />
         </TrayIconFlyoutIsland>
-    </root>
+    </TrayIconFlyout>
     """)]
-partial class WonderSongsSelectionFlyout : TrayIconFlyout
+partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<TrayIconFlyout>
 {
     WonderSongsPlayable playable;
     public WonderSongsSelectionFlyout(WonderSongsPlayable playable)
@@ -23,21 +23,21 @@ partial class WonderSongsSelectionFlyout : TrayIconFlyout
         bool deferShow = false;
         page.NextSongAvaliable += async () =>
         {
-            var a = this.IsLoaded;
-            Show();
-            if (!IsOpen) deferShow = true;
+            var a = MarkupNode.IsLoaded;
+            MarkupNode.Show();
+            if (!MarkupNode.IsOpen) deferShow = true;
         };
-        Loaded += delegate
+        MarkupNode.Loaded += delegate
         {
             if (deferShow)
             {
-                Show();
+                MarkupNode.Show();
             }
         };
 
-        page.NextSongSelected += Hide;
+        page.NextSongSelected += MarkupNode.Hide;
         var hostField = typeof(TrayIconFlyout).GetField("_host", BindingFlags.NonPublic | BindingFlags.Instance);
-        var field = hostField!.GetValue(this);
+        var field = hostField!.GetValue(MarkupNode);
         var method = field!.GetType().GetMethod("NavigateFocus", BindingFlags.NonPublic | BindingFlags.Instance);
         void NavigateFocus()
         {
@@ -45,7 +45,7 @@ partial class WonderSongsSelectionFlyout : TrayIconFlyout
         }
         KeyboardHook.Instance.ModifierPressed += delegate
         {
-            if (IsOpen)
+            if (MarkupNode.IsOpen)
             {
                 WinWrapper.Windowing.Window.FromWindowHandle(
                     (nint)page.XamlRoot.ContentIslandEnvironment.AppWindowId.Value

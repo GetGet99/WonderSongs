@@ -5,13 +5,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
+    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
         <TrayIconFlyoutIsland Width=500>
             homePage = <WonderSongsHomePage Margin=`new(16,32,16,32)` />
         </TrayIconFlyoutIsland>
-    </root>
+    </TrayIconFlyout>
     """)]
-partial class WonderSongsHomeFlyout : TrayIconFlyout
+partial class WonderSongsHomeFlyout : IQuickMarkupComponent<TrayIconFlyout>
 {
     public WonderSongsHomeFlyout()
     {
@@ -19,18 +19,18 @@ partial class WonderSongsHomeFlyout : TrayIconFlyout
         bool a = false;
         homePage.UIInitialized += () =>
         {
-            if (a) Show();
+            if (a) MarkupNode.Show();
             a = true;
         };
-        Loaded += delegate
+        MarkupNode.Loaded += delegate
         {
-            if (a) Show();
+            if (a) MarkupNode.Show();
             a = true;
         };
-        homePage.OnSelected += Hide;
+        homePage.OnSelected += MarkupNode.Hide;
         homePage.OnSuccess += (playable, swa) =>
         {
-            Hide();
+            MarkupNode.Hide();
             if (swa)
             {
                 var selection = new SingleWindowPage(playable);
@@ -47,7 +47,7 @@ partial class WonderSongsHomeFlyout : TrayIconFlyout
                 var tray = new WonderSongsTrayIconFlyout(playable);
 
                 var trayIcon = new SystemTrayIcon(
-                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\icon.ico",
+                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",
                     "WonderSongs",
                     Guid.NewGuid()
                 );
@@ -58,12 +58,12 @@ partial class WonderSongsHomeFlyout : TrayIconFlyout
 
                 void Icon_LeftClicked(object? sender, MouseEventReceivedEventArgs e)
                 {
-                    if (tray.IsOpen)
+                    if (tray.MarkupNode.IsOpen)
                         // this branch is never taken
-                        tray.Hide();
+                        tray.MarkupNode.Hide();
                     else
                         // this is called, but RootGrid is null so it does nothing
-                        tray.Show();
+                        tray.MarkupNode.Show();
                 }
 #else
                 var selection = new WonderSongsSelectionWindow(playable);

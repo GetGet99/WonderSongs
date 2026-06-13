@@ -8,12 +8,12 @@
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>
-      <PackageVersion Include="Get.Data" Version="1.1.7" />
-      <PackageVersion Include="QuickMarkup" Version="0.1.0" />
+    <PackageVersion Include="Get.Data" Version="1.1.7" />
+    <PackageVersion Include="QuickMarkup" Version="0.1.15" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework)=='net10.0-windows10.0.26100'">
-      <PackageVersion Include="0x5BFA.TrayIconFlyout.WinUI" Version="1.1.0" />
-      <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
-      <PackageVersion Include="WinWrapper.Windowing" Version="2.0.2" />
+    <PackageVersion Include="0x5BFA.TrayIconFlyout.WinUI" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.8.250916003" />
+    <PackageVersion Include="WinWrapper.Windowing" Version="2.0.2" />
   </ItemGroup>
 </Project>

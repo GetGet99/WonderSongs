@@ -16,7 +16,7 @@ namespace WonderSongs.UI;
                    FontSize=14
                    Opacity=0.7 />
 
-        <TextBlock Grid_Row=1
+        <TextBlock Grid.Row=1
                    Text=`CurrentSong?.Title ?? string.Empty`
                    FontSize=20
                  //    FontWeight=`FontWeights.SemiBold`

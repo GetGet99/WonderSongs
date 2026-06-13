@@ -48,7 +48,7 @@ partial class WonderSongsHomeWindow : WonderSongsWindow
                 var tray = new WonderSongsTrayIconFlyout(playable);
 
                 var trayIcon = new SystemTrayIcon(
-                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\icon.ico",
+                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",
                     "WonderSongs",
                     Guid.NewGuid()
                 );
@@ -59,12 +59,12 @@ partial class WonderSongsHomeWindow : WonderSongsWindow
 
                 void Icon_LeftClicked(object? sender, MouseEventReceivedEventArgs e)
                 {
-                    if (tray.IsOpen)
+                    if (tray.MarkupNode.IsOpen)
                         // this branch is never taken
-                        tray.Hide();
+                        tray.MarkupNode.Hide();
                     else
                         // this is called, but RootGrid is null so it does nothing
-                        tray.Show();
+                        tray.MarkupNode.Show();
                 }
 #else
                 var selection = new WonderSongsSelectionWindow(playable);

@@ -5,13 +5,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <root IsBackdropEnabled BackdropKind=Acrylic Placement=TopEdgeAlignedRight !HideOnLostFocus ActivationMode=NeverActivate PopupDirection=RightToLeft>
+    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=TopEdgeAlignedRight !HideOnLostFocus ActivationMode=NeverActivate PopupDirection=RightToLeft>
         <TrayIconFlyoutIsland>
             nowPlaying = <WonderSongsNowPlaying Margin=8 />
         </TrayIconFlyoutIsland>
-    </root>
+    </TrayIconFlyout>
     """)]
-partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
+partial class WonderSongsNowPlayingFlyout : IQuickMarkupComponent<TrayIconFlyout>
 {
     bool deferShow;
     int showVersion;
@@ -19,11 +19,11 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
     public WonderSongsNowPlayingFlyout()
     {
         Init();
-        Loaded += delegate
+        MarkupNode.Loaded += delegate
         {
             if (deferShow)
             {
-                Show();
+                MarkupNode.Show();
                 deferShow = false;
             }
         };
@@ -31,16 +31,16 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
 
     public void ShowSong(Song song)
     {
-        if (!DispatcherQueue.HasThreadAccess)
+        if (!MarkupNode.DispatcherQueue.HasThreadAccess)
         {
-            DispatcherQueue.TryEnqueue(() => ShowSong(song));
+            MarkupNode.DispatcherQueue.TryEnqueue(() => ShowSong(song));
             return;
         }
 
         nowPlaying.Song = song;
 
-        Show();
-        if (!IsOpen)
+        MarkupNode.Show();
+        if (!MarkupNode.IsOpen)
             deferShow = true;
 
         var version = ++showVersion;
@@ -50,18 +50,18 @@ partial class WonderSongsNowPlayingFlyout : TrayIconFlyout
     async Task HideAfterDelayAsync(int version)
     {
         await Task.Delay(TimeSpan.FromSeconds(7));
-        if (!DispatcherQueue.HasThreadAccess)
+        if (!MarkupNode.DispatcherQueue.HasThreadAccess)
         {
-            DispatcherQueue.TryEnqueue(() =>
+            MarkupNode.DispatcherQueue.TryEnqueue(() =>
             {
                 if (version == showVersion)
-                    Hide();
+                    MarkupNode.Hide();
             });
             return;
         }
 
         if (version == showVersion)
-            Hide();
+            MarkupNode.Hide();
     }
 }
 #endif

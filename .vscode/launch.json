@@ -73,5 +73,15 @@
       "console": "internalConsole",
       "stopAtEntry": false
     },
+    {
+      "name": "Uno Platform WinAppSDK Debug (Packaged)",
+      "type": "winapp",
+      "request": "launch",
+      "preLaunchTask": "build-windows-packaged",
+      "debuggerType": "coreclr",
+      "inputFolder": "${workspaceFolder}/WonderSongs.Uno/bin/Debug/net10.0-windows10.0.26100",
+      "manifest": "${workspaceFolder}/WonderSongs.Uno/bin/Debug/net10.0-windows10.0.26100/AppxManifest.xml",
+      "workingDirectory": "${workspaceFolder}/WonderSongs.Uno/bin/Debug/net10.0-windows10.0.26100"
+    },
   ]
 }
