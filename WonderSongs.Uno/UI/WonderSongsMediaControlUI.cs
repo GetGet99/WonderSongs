@@ -19,14 +19,15 @@ namespace WonderSongs.UI;
                 TextWrapping=WrapWholeWords
                 FontSize=`SmallMode ? 16 : 32`
             />
-            <HStack Spacing=16 CenterH>
-                <Button Width=48 Height=48 CornerRadius=24 @Click+=`playable.Play()` IsVisible=`!IsPlaying`>
+            <Button Width=48 Height=48 CornerRadius=24 @Click+=`
+                if (IsPlaying) playable.Play();
+                else playable.Pause();
+            `>
+                if (`!IsPlaying`)
                     <SymbolIcon Symbol=Play />
-                </Button>
-                <Button Width=48 Height=48 CornerRadius=24 @Click+=`playable.Pause()` IsVisible=`IsPlaying`>
+                else
                     <SymbolIcon Symbol=Pause />
-                </Button>
-            </HStack>
+            </Button>
         </VStack>
         clockPlace = <Border Top Right Margin=16>
             if (`IsClockEnabled`)

@@ -199,19 +199,6 @@ static class UIFuncs
         element.FontStyle = FontStyle.Italic;
         return element;
     }
-    extension (FrameworkElement fe)
-    {
-        public bool IsVisible
-        {
-            get => fe.Visibility is Visibility.Visible;
-            set => fe.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-        }
-        public int Grid_Row
-        {
-            get => Grid.GetRow(fe);
-            set => Grid.SetRow(fe, value);
-        }
-    }
 }
 public partial class VStack : StackPanel, IEnumerable<UIElement>, IEnumerable
 {
