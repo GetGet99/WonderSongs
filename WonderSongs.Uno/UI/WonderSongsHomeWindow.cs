@@ -45,7 +45,7 @@ partial class WonderSongsHomeWindow : WonderSongsWindow
                 var selection = new WonderSongsSelectionFlyout(playable);
                 var nowPlaying = new WonderSongsNowPlayingFlyout();
                 newSongPlaying = nowPlaying.ShowSong;
-                var tray = new WonderSongsTrayIconFlyout(playable);
+                var tray = new WonderSongsDesktopFlyout(playable);
 
                 var trayIcon = new SystemTrayIcon(
                     @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",

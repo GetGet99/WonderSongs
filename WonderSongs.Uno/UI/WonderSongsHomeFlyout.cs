@@ -5,13 +5,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus>
-        <TrayIconFlyoutIsland Width=500>
+    <DesktopFlyout IsBackdropEnabled BackdropKind=DesktopAcrylic Placement=TopCenter !HideOnLostFocus>
+        <DesktopFlyoutIsland Width=500>
             homePage = <WonderSongsHomePage Margin=`new(16,32,16,32)` />
-        </TrayIconFlyoutIsland>
-    </TrayIconFlyout>
+        </DesktopFlyoutIsland>
+    </DesktopFlyout>
     """)]
-partial class WonderSongsHomeFlyout : IQuickMarkupComponent<TrayIconFlyout>
+partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
 {
     public WonderSongsHomeFlyout()
     {
@@ -44,7 +44,7 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<TrayIconFlyout>
                 var selection = new WonderSongsSelectionFlyout(playable);
                 var nowPlaying = new WonderSongsNowPlayingFlyout();
                 newSongPlaying = nowPlaying.ShowSong;
-                var tray = new WonderSongsTrayIconFlyout(playable);
+                var tray = new WonderSongsDesktopFlyout(playable);
 
                 var trayIcon = new SystemTrayIcon(
                     @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",

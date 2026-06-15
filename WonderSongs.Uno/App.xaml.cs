@@ -17,7 +17,7 @@ public partial class App : Application
     }
 
     protected Window? MainWindow { get; private set; }
-    public static Style DefaultWindows11TrayIconFlyoutStyle => (Style)Current.Resources["DefaultWindows11TrayIconFlyoutStyle"];
+    public static Style DefaultWindows11DesktopFlyoutStyle => (Style)Current.Resources["DefaultWindows11DesktopFlyoutStyle"];
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
@@ -148,7 +148,7 @@ public partial class App : Application
 #endif
     }
 #if WINAPPSDK_PACKAGED
-    internal static WonderSongsTrayIconFlyout CurrentTray { get; set; }
+    internal static WonderSongsDesktopFlyout CurrentTray { get; set; }
     public static SystemTrayIcon TrayIcon { get; set; }
     WonderSongsHomeFlyout homeFlyout;
 #endif

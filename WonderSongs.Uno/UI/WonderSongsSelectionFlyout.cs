@@ -6,13 +6,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=Top !HideOnLostFocus ActivationMode=NoActivateOnOpen>
-        <TrayIconFlyoutIsland>
+    <DesktopFlyout IsBackdropEnabled BackdropKind=DesktopAcrylic Placement=TopCenter !HideOnLostFocus ActivationMode=NoActivateOnOpen>
+        <DesktopFlyoutIsland>
             page = <WonderSongsSelectionPage(`playable`) Margin=16 ShowFocusHint />
-        </TrayIconFlyoutIsland>
-    </TrayIconFlyout>
+        </DesktopFlyoutIsland>
+    </DesktopFlyout>
     """)]
-partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<TrayIconFlyout>
+partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<DesktopFlyout>
 {
     WonderSongsPlayable playable;
     public WonderSongsSelectionFlyout(WonderSongsPlayable playable)
@@ -36,7 +36,7 @@ partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<TrayIconFlyout>
         };
 
         page.NextSongSelected += MarkupNode.Hide;
-        var hostField = typeof(TrayIconFlyout).GetField("_host", BindingFlags.NonPublic | BindingFlags.Instance);
+        var hostField = typeof(DesktopFlyout).GetField("_host", BindingFlags.NonPublic | BindingFlags.Instance);
         var field = hostField!.GetValue(MarkupNode);
         var method = field!.GetType().GetMethod("NavigateFocus", BindingFlags.NonPublic | BindingFlags.Instance);
         void NavigateFocus()

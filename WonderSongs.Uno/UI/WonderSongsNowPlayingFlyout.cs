@@ -5,13 +5,13 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic Placement=TopEdgeAlignedRight !HideOnLostFocus ActivationMode=NeverActivate PopupDirection=RightToLeft>
-        <TrayIconFlyoutIsland>
+    <DesktopFlyout IsBackdropEnabled BackdropKind=DesktopAcrylic Placement=TopRight !HideOnLostFocus ActivationMode=NeverActivate PopupDirection=RightToLeft>
+        <DesktopFlyoutIsland>
             nowPlaying = <WonderSongsNowPlaying Margin=8 />
-        </TrayIconFlyoutIsland>
-    </TrayIconFlyout>
+        </DesktopFlyoutIsland>
+    </DesktopFlyout>
     """)]
-partial class WonderSongsNowPlayingFlyout : IQuickMarkupComponent<TrayIconFlyout>
+partial class WonderSongsNowPlayingFlyout : IQuickMarkupComponent<DesktopFlyout>
 {
     bool deferShow;
     int showVersion;

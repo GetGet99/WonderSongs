@@ -4,16 +4,16 @@ using WonderSongs.Core;
 namespace WonderSongs.UI;
 
 [QuickMarkup("""
-    <TrayIconFlyout IsBackdropEnabled BackdropKind=Acrylic>
-        <TrayIconFlyoutIsland Height=300>
+    <DesktopFlyout IsBackdropEnabled BackdropKind=DesktopAcrylic>
+        <DesktopFlyoutIsland Height=300>
             <WonderSongsMediaControlUI(`playable`) SmallMode />
-        </TrayIconFlyoutIsland>
-    </TrayIconFlyout>
+        </DesktopFlyoutIsland>
+    </DesktopFlyout>
     """)]
-partial class WonderSongsTrayIconFlyout : IQuickMarkupComponent<TrayIconFlyout>
+partial class WonderSongsDesktopFlyout : IQuickMarkupComponent<DesktopFlyout>
 {
     WonderSongsPlayable playable;
-    public WonderSongsTrayIconFlyout(WonderSongsPlayable playable)
+    public WonderSongsDesktopFlyout(WonderSongsPlayable playable)
     {
         App.CurrentTray = this;
         this.playable = playable;

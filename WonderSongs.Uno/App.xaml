@@ -13,7 +13,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <!-- Add resources here -->
-            <Style x:Key="DefaultWindows11TrayIconFlyoutStyle" TargetType="lib:TrayIconFlyout">
+            <!-- <Style x:Key="DefaultWindows11DesktopFlyoutStyle" TargetType="lib:DesktopFlyout">
                 <Setter Property="HorizontalAlignment" Value="Right" />
                 <Setter Property="VerticalAlignment" Value="Bottom" />
                 <Setter Property="Margin" Value="12" />
@@ -23,7 +23,7 @@
                 <Setter Property="IsTabStop" Value="False" />
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="lib:TrayIconFlyout">
+                        <ControlTemplate TargetType="lib:DesktopFlyout">
                             <Grid
 						x:Name="PART_RootGrid"
 						BorderBrush="{TemplateBinding BorderBrush}"
@@ -41,7 +41,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
+            </Style> -->
 
         </ResourceDictionary>
   </Application.Resources>
