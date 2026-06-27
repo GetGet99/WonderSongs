@@ -39,7 +39,7 @@
             Lottie;
             Toolkit;
             SkiaRenderer;
-            MediaPlayerElement
+            MediaPlayerElement;
         </UnoFeatures>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Platforms>AnyCPU;x64</Platforms>

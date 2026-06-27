@@ -10,7 +10,7 @@ internal class Program
 
         var host = UnoPlatformHostBuilder.Create()
             .App(() => new App())
-            .UseX11()
+            .UseX11(hostBuilder => hostBuilder.PreloadMediaPlayer(true))
             .UseLinuxFrameBuffer()
             .UseMacOS()
             .UseWin32()

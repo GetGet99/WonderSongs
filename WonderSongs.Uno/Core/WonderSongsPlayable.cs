@@ -17,10 +17,17 @@ partial class WonderSongsPlayable
     {
         var isplaying = Auto(false);
         IsPlayingProperty = isplaying;
+#if ANDROID || WINAPPSDK_PACKAGED
         MediaPlayer.CurrentStateChanged += delegate
         {
             isplaying.CurrentValue = MediaPlayer.CurrentState is MediaPlayerState.Playing;
         };
+#else
+        MediaPlayer.PlaybackSession.PlaybackStateChanged += delegate
+        {
+            isplaying.CurrentValue = MediaPlayer.PlaybackSession.PlaybackState is Windows.Media.Playback.MediaPlaybackState.Playing;
+        };
+#endif
 
 #if ANDROID
         InitializeWithWindow(default);
@@ -70,6 +77,12 @@ partial class WonderSongsPlayable
 
     private async void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
     {
+#if DESKTOP
+        // Uno Platform gives a bug where `sender.NaturalDuration`
+        // and `sender.Position` could be `-00:00:00.0010000`
+        if (sender.NaturalDuration <= TimeSpan.Zero) return;
+        if (sender.Position <= TimeSpan.Zero) return;
+#endif
         var position = sender.Position;
         if (!hasCrossed && sender.NaturalDuration - position <= TimeSpan.FromSeconds(30))
         {
@@ -141,6 +154,7 @@ partial class WonderSongsPlayable
     }
     public async void Play()
     {
+        Debug.WriteLine($"Play()");
         if (PlayingSong is not null) goto Play;
         PlayingSong = NextSong;
         NextSong = null;
@@ -155,10 +169,20 @@ partial class WonderSongsPlayable
         // possibly that there is no next song scheduled yet
         return;
     Play:
+#if DESKTOP
+    if (MediaPlayer.PlaybackSession.PlaybackState is not Windows.Media.Playback.MediaPlaybackState.Playing)
+#endif
         MediaPlayer.Play();
     }
 
-    public void Pause() => MediaPlayer.Pause();
+    public void Pause()
+    {
+#if DESKTOP
+        Debug.WriteLine($"Pause()");
+        if (MediaPlayer.PlaybackSession.PlaybackState is Windows.Media.Playback.MediaPlaybackState.Playing)
+#endif
+        MediaPlayer.Pause();
+    }
     public void LifeCycle(Func<Task<Song>> NextSongsSelectionDialogTrigger, Action<Song> NewSongPlaying)
     {
         this.NextSongsSelectionDialogTrigger = () =>

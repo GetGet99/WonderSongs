@@ -19,8 +19,8 @@ namespace WonderSongs.UI;
                 TextWrapping=WrapWholeWords
                 FontSize=`SmallMode ? 16 : 32`
             />
-            <Button Width=48 Height=48 CornerRadius=24 @Click+=`
-                if (IsPlaying) playable.Play();
+            <Button Width=48 Height=48 CornerRadius=24 CenterH @Click+=`
+                if (!IsPlaying) playable.Play();
                 else playable.Pause();
             `>
                 if (`!IsPlaying`)

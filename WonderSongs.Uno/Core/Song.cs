@@ -38,8 +38,13 @@ class Song
     public Task<StorageFile> GetSourceAsync()
     {
         return Task.FromResult(File);
-        //var uri = File.TryGetAndroidUri();
-        //return Task.FromResult(MediaSource.CreateFromUri(new(uri!.ToString()!)));
+    }
+#elif DESKTOP
+    public Task<MediaSource> GetSourceAsync()
+    {
+        Debug.WriteLine(File.Path);
+        Debug.WriteLine(new Uri(File.Path).ToString());
+        return Task.FromResult(MediaSource.CreateFromUri(new(File.Path)));
     }
 #else
     public Task<MediaSource> GetSourceAsync()
