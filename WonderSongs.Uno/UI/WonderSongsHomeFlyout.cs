@@ -44,7 +44,7 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
                 var selection = new WonderSongsSelectionFlyout(playable);
                 var nowPlaying = new WonderSongsNowPlayingFlyout();
                 newSongPlaying = nowPlaying.ShowSong;
-                var tray = new WonderSongsDesktopFlyout(playable);
+                var tray = new WonderSongsTrayIconFlyout(playable);
 
                 var trayIcon = new SystemTrayIcon(
                     @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",
@@ -52,18 +52,21 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
                     Guid.NewGuid()
                 );
                 trayIcon.LeftClicked += Icon_LeftClicked;
+                trayIcon.RightClicked += Icon_LeftClicked;
                 trayIcon.IsVisible = true;
                 trayIcon.Show();
                 App.TrayIcon = trayIcon;
+                App.CurrentTrayMenuFlyout = new();
 
                 void Icon_LeftClicked(object? sender, MouseEventReceivedEventArgs e)
                 {
-                    if (tray.MarkupNode.IsOpen)
-                        // this branch is never taken
-                        tray.MarkupNode.Hide();
-                    else
-                        // this is called, but RootGrid is null so it does nothing
-                        tray.MarkupNode.Show();
+                    //if (tray.MarkupNode.IsOpen)
+                    //    // this branch is never taken
+                    //    tray.MarkupNode.Hide();
+                    //else
+                    //    // this is called, but RootGrid is null so it does nothing
+                    //    tray.MarkupNode.Show();
+                    App.CurrentTrayMenuFlyout.MarkupNode.Show(e.Point);
                 }
 #else
                 var selection = new WonderSongsSelectionWindow(playable);

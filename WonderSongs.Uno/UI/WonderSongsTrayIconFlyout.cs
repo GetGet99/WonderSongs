@@ -10,10 +10,10 @@ namespace WonderSongs.UI;
         </DesktopFlyoutIsland>
     </DesktopFlyout>
     """)]
-partial class WonderSongsDesktopFlyout : IQuickMarkupComponent<DesktopFlyout>
+partial class WonderSongsTrayIconFlyout : IQuickMarkupComponent<DesktopFlyout>
 {
     WonderSongsPlayable playable;
-    public WonderSongsDesktopFlyout(WonderSongsPlayable playable)
+    public WonderSongsTrayIconFlyout(WonderSongsPlayable playable)
     {
         App.CurrentTray = this;
         this.playable = playable;

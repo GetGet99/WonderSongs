@@ -27,7 +27,7 @@ namespace WonderSongs.UI;
         </VStack>
     </root>
     """)]
-partial class WonderSongsSelectionPage : Page
+partial class WonderSongsSelectionPage : WonderSongsPage
 {
     Button[] buttons = [new(), new(), new()];
     WonderSongsPlayable Playable { get; }

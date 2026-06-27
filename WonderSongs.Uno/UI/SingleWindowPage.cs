@@ -6,7 +6,7 @@ using MainActivity = WonderSongs.Droid.MainActivity;
 
 namespace WonderSongs.UI;
 
-partial class SingleWindowPage : Page
+partial class SingleWindowPage : WonderSongsPage
 {
     public SingleWindowPage(WonderSongsPlayable? playable = null)
     {

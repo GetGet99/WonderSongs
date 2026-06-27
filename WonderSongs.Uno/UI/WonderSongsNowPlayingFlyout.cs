@@ -38,7 +38,6 @@ partial class WonderSongsNowPlayingFlyout : IQuickMarkupComponent<DesktopFlyout>
         }
 
         nowPlaying.Song = song;
-
         MarkupNode.Show();
         if (!MarkupNode.IsOpen)
             deferShow = true;

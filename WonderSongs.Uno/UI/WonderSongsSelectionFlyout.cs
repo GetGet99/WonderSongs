@@ -36,13 +36,6 @@ partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<DesktopFlyout>
         };
 
         page.NextSongSelected += MarkupNode.Hide;
-        var hostField = typeof(DesktopFlyout).GetField("_host", BindingFlags.NonPublic | BindingFlags.Instance);
-        var field = hostField!.GetValue(MarkupNode);
-        var method = field!.GetType().GetMethod("NavigateFocus", BindingFlags.NonPublic | BindingFlags.Instance);
-        void NavigateFocus()
-        {
-            method!.Invoke(field, []);
-        }
         KeyboardHook.Instance.ModifierPressed += delegate
         {
             if (MarkupNode.IsOpen)
@@ -50,7 +43,7 @@ partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<DesktopFlyout>
                 WinWrapper.Windowing.Window.FromWindowHandle(
                     (nint)page.XamlRoot.ContentIslandEnvironment.AppWindowId.Value
                 ).SetAsForegroundWindow();
-                NavigateFocus();
+                MarkupNode.NavigateFocus(XamlSourceFocusNavigationReason.Programmatic);
                 return true;
             }
             return false;

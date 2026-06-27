@@ -26,7 +26,7 @@
       "server": {
         "runtimeExecutable": "dotnet",
         "program": "run",
-        "args": ["--no-build","-f","net9.0-browserwasm","--launch-profile", "WonderSongs.Uno (WebAssembly)"],
+        "args": ["--no-build","-f","net10.0-browserwasm","--launch-profile", "WonderSongs.Uno (WebAssembly)"],
         "outputCapture": "std",
         "timeout": 30000,
         "cwd": "${workspaceFolder}/WonderSongs.Uno"
@@ -47,7 +47,7 @@
       "server": {
         "runtimeExecutable": "dotnet",
         "program": "run",
-        "args": ["--no-build","-f","net9.0-browserwasm","--launch-profile", "WonderSongs.Uno (WebAssembly)"],
+        "args": ["--no-build","-f","net10.0-browserwasm","--launch-profile", "WonderSongs.Uno (WebAssembly)"],
         "outputCapture": "std",
         "timeout": 30000,
         "cwd": "${workspaceFolder}/WonderSongs.Uno"
@@ -62,7 +62,7 @@
       "request": "launch",
       "preLaunchTask": "build-desktop",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/WonderSongs.Uno/bin/Debug/net9.0-desktop/WonderSongs.Uno.dll",
+      "program": "${workspaceFolder}/WonderSongs.Uno/bin/Debug/net10.0-desktop/WonderSongs.Uno.dll",
       "args": [],
       "launchSettingsProfile": "WonderSongs.Uno (Desktop)",
       "env": {

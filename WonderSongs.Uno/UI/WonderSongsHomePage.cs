@@ -17,7 +17,7 @@ namespace WonderSongs.UI;
         </VStack>
     </root>
     """)]
-partial class WonderSongsHomePage : Page
+partial class WonderSongsHomePage : WonderSongsPage
 {
     const bool HasUno =
 #if HAS_UNO
@@ -47,7 +47,7 @@ partial class WonderSongsHomePage : Page
                 {
                     OnSelected?.Invoke();
                     var collection = await WonderSongsApp.OpenFromCollectionAsync(folder);
-                    OnSuccess?.Invoke(collection, SWA_Mode.IsChecked ?? false);
+                    OnSuccess?.Invoke(collection, SWA_Mode?.IsChecked ?? false);
                 }));
             }
             UIInitialized?.Invoke();

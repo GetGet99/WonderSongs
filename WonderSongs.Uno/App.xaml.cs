@@ -148,7 +148,8 @@ public partial class App : Application
 #endif
     }
 #if WINAPPSDK_PACKAGED
-    internal static WonderSongsDesktopFlyout CurrentTray { get; set; }
+    internal static WonderSongsTrayIconFlyout CurrentTray { get; set; }
+    internal static WonderSongsTrayMenuFlyout CurrentTrayMenuFlyout { get; set; }
     public static SystemTrayIcon TrayIcon { get; set; }
     WonderSongsHomeFlyout homeFlyout;
 #endif
