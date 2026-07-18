@@ -187,15 +187,10 @@ partial class WonderSongsPlayable
     {
         this.NextSongsSelectionDialogTrigger = () =>
         {
-#if !ANDROID
-            Task.Run(async () =>
-            {
-                MediaPlayer.Volume = 0.5;
-                await Task.Delay(2000);
-                MediaPlayer.Volume = 1;
-            });
-#else
+#if ANDROID
             Droid.VibrationHelper.VibrateTwice();
+#endif
+#if !DESKTOP
             Task.Run(async () =>
             {
                 MediaPlayer.Volume = 0.5;
