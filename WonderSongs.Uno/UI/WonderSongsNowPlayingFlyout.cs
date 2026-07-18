@@ -1,4 +1,4 @@
-#if WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
 using Microsoft.UI.Windowing;
 using WonderSongs.Core;
 

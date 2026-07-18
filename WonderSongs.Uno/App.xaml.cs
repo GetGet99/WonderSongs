@@ -21,10 +21,10 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-#if HAS_UNO
-        SingleWindowApplication(args);
-#elif WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
         homeFlyout = new WonderSongsHomeFlyout();
+#elif HAS_UNO
+        SingleWindowApplication(args);
 #else
         MainWindow = new WonderSongsHomeWindow();
         MainWindow.Activate();
@@ -147,7 +147,7 @@ public partial class App : Application
 #endif
 #endif
     }
-#if WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
     internal static WonderSongsTrayIconFlyout CurrentTray { get; set; }
     internal static WonderSongsTrayMenuFlyout CurrentTrayMenuFlyout { get; set; }
     public static SystemTrayIcon TrayIcon { get; set; }

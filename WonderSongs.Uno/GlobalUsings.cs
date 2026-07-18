@@ -26,6 +26,8 @@ global using Windows.UI;
 #if WINAPPSDK_PACKAGED
 global using Windows.UI.Xaml;
 global using WinRT.Interop;
+#endif
+#if WINAPPSDK_PACKAGED || DESKTOP
 global using DesktopFlyouts;
 #endif
 global using static Get.Data.Properties.AutoTyper;

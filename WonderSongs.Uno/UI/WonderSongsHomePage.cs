@@ -11,23 +11,39 @@ namespace WonderSongs.UI;
             songsPlace = <VStack Spacing=16 />
             <TextBlock Text="or" CenterH />
             <Button Content="Select folder of music" @Click+=`SelectFolderOfMusic()` CenterH />
-            if (`!HasUno`)
-                SWA_Mode = <CheckBox Content="Single Window Application Mode" IsChecked=`HasUno` CenterH />
+            if (`RunningInMultiWindow`)
+                SWA_Mode = <CheckBox Content="Single Window Application Mode" IsChecked=`!RunningInMultiWindow` CenterH />
             <Button Content="Exit" @Click+=`Environment.Exit(0)` CenterH />
         </VStack>
     </root>
     """)]
 partial class WonderSongsHomePage : WonderSongsPage
 {
-    const bool HasUno =
-#if HAS_UNO
+    const bool RunningInMultiWindow =
+#if HAS_UNO || DESKTOP
         true
 #else
         false
 #endif
         ;
-    public event Action? UIInitialized;
+    Action? _UIInitialized;
+    public event Action? UIInitialized
+    {
+        add
+        {
+            _UIInitialized += value;
+            if (initializedInner)
+            {
+                value?.Invoke();
+            }
+        }
+        remove
+        {
+            _UIInitialized -= value;
+        }
+    }
     public event Action? OnSelected;
+    bool initializedInner;
     public WonderSongsHomePage()
     {
         QuickMarkup.Infra.ReactiveScheduler.AddTickCallbackForCurrentThread(
@@ -50,7 +66,8 @@ partial class WonderSongsHomePage : WonderSongsPage
                     OnSuccess?.Invoke(collection, SWA_Mode?.IsChecked ?? false);
                 }));
             }
-            UIInitialized?.Invoke();
+            initializedInner = true;
+            _UIInitialized?.Invoke();
         }
     }
     string RandomMessage()

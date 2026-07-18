@@ -1,4 +1,4 @@
-#if !HAS_UNO
+#if !HAS_UNO || DESKTOP
 using WonderSongs.Core;
 
 namespace WonderSongs.UI;

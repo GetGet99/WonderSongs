@@ -1,4 +1,4 @@
-#if WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
 using System.Reflection;
 using Microsoft.UI.Windowing;
 using WonderSongs.Core;
@@ -36,6 +36,7 @@ partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<DesktopFlyout>
         };
 
         page.NextSongSelected += MarkupNode.Hide;
+#if WINAPPSDK_PACKAGED
         KeyboardHook.Instance.ModifierPressed += delegate
         {
             if (MarkupNode.IsOpen)
@@ -48,6 +49,7 @@ partial class WonderSongsSelectionFlyout : IQuickMarkupComponent<DesktopFlyout>
             }
             return false;
         };
+#endif
     }
     public Task<Song> SelectNextSongAsync() => page.SelectNextSongAsync();
 }

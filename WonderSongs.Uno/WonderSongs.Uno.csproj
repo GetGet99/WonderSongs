@@ -54,6 +54,9 @@
         <PackageReference Include="Microsoft.Windows.SDK.BuildTools" />
         <PackageReference Include="WinWrapper.Windowing" />
     </ItemGroup>
+    <ItemGroup Condition="$(TargetFramework)=='net10.0-desktop'">
+        <PackageReference Include="Get.DesktopFlyouts.Uno" />
+    </ItemGroup>
     <ItemGroup>
       <Content Update="Assets\wondersongs.ico">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

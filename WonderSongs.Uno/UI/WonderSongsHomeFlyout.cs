@@ -1,4 +1,4 @@
-#if WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
 using Microsoft.UI.Windowing;
 using WonderSongs.Core;
 
@@ -40,7 +40,7 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
             {
                 Action<Song> newSongPlaying = delegate { };
 
-#if WINAPPSDK_PACKAGED
+#if WINAPPSDK_PACKAGED || DESKTOP
                 var selection = new WonderSongsSelectionFlyout(playable);
                 var nowPlaying = new WonderSongsNowPlayingFlyout();
                 newSongPlaying = nowPlaying.ShowSong;
