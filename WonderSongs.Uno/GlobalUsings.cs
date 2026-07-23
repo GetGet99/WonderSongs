@@ -30,6 +30,9 @@ global using WinRT.Interop;
 #if WINAPPSDK_PACKAGED || DESKTOP
 global using DesktopFlyouts;
 #endif
+#if DESKTOP
+global using GTrayIcon.Linux;
+#endif
 global using static Get.Data.Properties.AutoTyper;
 global using static Get.Data.XACL.QuickBindingExtension;
 global using static Get.UI.Data.QuickCreate;
