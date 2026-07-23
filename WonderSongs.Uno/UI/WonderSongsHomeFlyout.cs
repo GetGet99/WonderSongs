@@ -46,11 +46,19 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
                 newSongPlaying = nowPlaying.ShowSong;
                 var tray = new WonderSongsTrayIconFlyout(playable);
 
+#if WINAPPSDK_PACKAGED
                 var trayIcon = new SystemTrayIcon(
                     @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.ico",
                     "WonderSongs",
                     Guid.NewGuid()
                 );
+#else
+                var trayIcon = new SystemTrayIcon(
+                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.png",
+                    "WonderSongs",
+                    Guid.NewGuid()
+                );
+#endif
                 trayIcon.LeftClicked += Icon_LeftClicked;
                 trayIcon.RightClicked += Icon_LeftClicked;
                 trayIcon.IsVisible = true;
