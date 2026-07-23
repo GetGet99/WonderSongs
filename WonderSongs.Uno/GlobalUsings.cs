@@ -31,7 +31,9 @@ global using WinRT.Interop;
 global using DesktopFlyouts;
 #endif
 #if DESKTOP
-global using GTrayIcon.Linux;
+global using SystemTrayIcon = GTrayIcon.Linux.SystemTrayIcon;
+global using MouseEventReceivedEventArgs = GTrayIcon.Linux.MouseEventReceivedEventArgs;
+global using GPoint = GTrayIcon.Linux.Point;
 #endif
 global using static Get.Data.Properties.AutoTyper;
 global using static Get.Data.XACL.QuickBindingExtension;

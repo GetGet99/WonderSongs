@@ -54,9 +54,9 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
                 );
 #else
                 var trayIcon = new SystemTrayIcon(
-                    @"D:\Programming\VS\WonderSongs.Uno\WonderSongs.Uno\Assets\wondersongs.png",
+                    @"/mnt/LinuxProgramData/Codes/WonderSongs/WonderSongs.Uno/Assets/wondersongs.png",
                     "WonderSongs",
-                    Guid.NewGuid()
+                    "getget99-wondersongs-trayicon"
                 );
 #endif
                 trayIcon.LeftClicked += Icon_LeftClicked;
@@ -74,7 +74,7 @@ partial class WonderSongsHomeFlyout : IQuickMarkupComponent<DesktopFlyout>
                     //else
                     //    // this is called, but RootGrid is null so it does nothing
                     //    tray.MarkupNode.Show();
-                    App.CurrentTrayMenuFlyout.MarkupNode.Show(e.Point);
+                    // App.CurrentTrayMenuFlyout.MarkupNode.Show(new(e.Point.X, e.Point.Y));
                 }
 #else
                 var selection = new WonderSongsSelectionWindow(playable);
