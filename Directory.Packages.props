@@ -10,10 +10,11 @@
   <ItemGroup>
     <PackageVersion Include="Get.Data" Version="1.1.7" />
     <PackageVersion Include="QuickMarkup" Version="0.1.15" />
-    <PackageVersion Include="Get.DesktopFlyouts.Uno" Version="1.4.0" />
+    <PackageVersion Include="Get.DesktopFlyouts.Uno" Version="1.4.0-beta1" />
     <PackageVersion Include="DesktopFlyouts.WinUI" Version="1.4.0" />
     <PackageVersion Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
     <PackageVersion Include="WinWrapper.Windowing" Version="2.0.2" />
     <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
+    <PackageVersion Include="Olbrasoft.SystemTray.Linux" Version="1.1.15" />
   </ItemGroup>
 </Project>
